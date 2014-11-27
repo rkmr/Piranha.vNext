@@ -356,6 +356,7 @@
     <Compile Include="Areas\Manager\Controllers\ConfigMgrController.cs" />
     <Compile Include="Areas\Manager\Controllers\ManagerController.cs" />
     <Compile Include="Areas\Manager\Controllers\PostMgrController.cs" />
+    <Compile Include="Areas\Manager\Controllers\PageTypeMgrController.cs" />
     <Compile Include="Areas\Manager\Controllers\PostTypeMgrController.cs" />
     <Compile Include="Areas\Manager\ManagerAreaRegistration.cs" />
     <Compile Include="Global.asax.cs">
@@ -372,6 +373,8 @@
     <Compile Include="Manager\Models\Category\EditModel.cs" />
     <Compile Include="Manager\Models\Category\ListItem.cs" />
     <Compile Include="Manager\Models\Config\EditModel.cs" />
+    <Compile Include="Manager\Models\PageType\EditModel.cs" />
+    <Compile Include="Manager\Models\PageType\ListModel.cs" />
     <Compile Include="Manager\Models\Post\CommentState.cs" />
     <Compile Include="Manager\Models\Post\EditModel.cs" />
     <Compile Include="Manager\Models\Post\ListModel.cs" />
@@ -411,6 +414,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Global.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Manager\Resources\PageType.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PageType.resx</DependentUpon>
     </Compile>
     <Compile Include="Manager\Resources\Post.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -481,6 +489,8 @@
     <Content Include="Areas\Manager\Views\CategoryMgr\Partial\EditCategory.cshtml" />
     <Content Include="Areas\Manager\Views\CategoryMgr\List.cshtml" />
     <Content Include="Areas\Manager\Views\ConfigMgr\EditorTemplates\ConfigBlock.cshtml" />
+    <Content Include="Areas\Manager\Views\PageTypeMgr\List.cshtml" />
+    <Content Include="Areas\Manager\Views\PageTypeMgr\Edit.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -534,6 +544,10 @@
     <EmbeddedResource Include="Manager\Resources\Global.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Global.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Manager\Resources\PageType.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>PageType.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Manager\Resources\Post.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

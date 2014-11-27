@@ -78,6 +78,13 @@ namespace Piranha.Manager
 				.ForMember(b => b.Created, o => o.Ignore())
 				.ForMember(b => b.Updated, o => o.Ignore());
 
+			// Page type
+			Mapper.CreateMap<Piranha.Models.PageType, Models.PageType.EditModel>();
+			Mapper.CreateMap<Models.PageType.EditModel, Piranha.Models.PageType>()
+				.ForMember(t => t.Id, o => o.Ignore())
+				.ForMember(t => t.Created, o => o.Ignore())
+				.ForMember(t => t.Updated, o => o.Ignore());
+
 			// Post
 			Mapper.CreateMap<Piranha.Models.Post, Models.Post.EditModel>()
 				.ForMember(p => p.Authors, o => o.Ignore())
