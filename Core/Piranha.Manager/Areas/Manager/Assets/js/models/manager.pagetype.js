@@ -55,14 +55,7 @@ manager.models.pagetype = function (id) {
 			dataType: 'json',
 			success: function (result) {
 				if (result.success) {
-					self.id(result.data.Id);
-					self.name(result.data.Name);
-					self.slug(result.data.Slug);
-					self.description(result.data.Description);
-					self.route(result.data.Route);
-					self.view(result.data.View);
-					self.regions(result.data.Regions);
-					self.regionTypes(result.data.RegionTypes);
+					self.bind(result.data);
 				}
 			},
 			error: function (result) {
@@ -71,7 +64,9 @@ manager.models.pagetype = function (id) {
 		});
 	};
 
+	// Saves the page type
 	self.save = function () {
+		// Create the post data
 		var data = {
 			Id: self.id(),
 			Name: self.name(),
@@ -82,6 +77,7 @@ manager.models.pagetype = function (id) {
 			Regions: []
 		};
 
+		// Add the current region
 		for (var n = 0; n < self.regions().length; n++) {
 			data.Regions.push({
 				Name: self.regions()[n].Name,
@@ -91,6 +87,7 @@ manager.models.pagetype = function (id) {
 			});
 		}
 
+		// Save it
 		$.ajax({
 			url: baseUrl + 'manager/pagetype/save',
 			type: 'POST',
@@ -99,6 +96,12 @@ manager.models.pagetype = function (id) {
 			data: JSON.stringify(data),
 			success: function (result) {
 				if (result.success) {
+					// Check for new id
+					if (result.data.Id != self.id())
+						history.pushState({}, 'Edit page type', document.URL + '/' + result.data.Id);
+
+					// Update and notify
+					self.bind(result.data);
 					manager.notifySave($('body'));
 				}
 			},
@@ -108,6 +111,7 @@ manager.models.pagetype = function (id) {
 		});
 	};
 
+	// Moves the given region up in the list
 	self.regionUp = function (region) {
 		var index = self.regions().indexOf(region);
 		if (index > 0) {
@@ -116,6 +120,7 @@ manager.models.pagetype = function (id) {
 		}
 	};
 
+	// Moves the given region down in the list
 	self.regionDown = function (region) {
 		var index = self.regions().indexOf(region);
 		if (index < (self.regions().length - 1)) {
@@ -124,6 +129,7 @@ manager.models.pagetype = function (id) {
 		}
 	};
 
+	// Adds a new region to the list
 	self.regionAdd = function () {
 		self.regions().push({
 			Name: self.newRegionName(),
@@ -139,6 +145,7 @@ manager.models.pagetype = function (id) {
 		self.newRegionType('');
 	};
 
+	// Deletes the given region from the list
 	self.regionDelete = function (region) {
 		var index = self.regions().indexOf(region);
 		if (index > -1) {
@@ -146,6 +153,18 @@ manager.models.pagetype = function (id) {
 			self.regions(self.regions());
 		}
 	};
+
+	// Binds the given data to the model.
+	self.bind = function (data) {
+		self.id(data.Id);
+		self.name(data.Name);
+		self.slug(data.Slug);
+		self.description(data.Description);
+		self.route(data.Route);
+		self.view(data.View);
+		self.regions(data.Regions);
+		self.regionTypes(data.RegionTypes);
+	}
 
 	// Load the selected page type
 	self.edit(id);

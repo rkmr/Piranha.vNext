@@ -38,6 +38,12 @@ namespace Piranha.Areas.Manager.Controllers
 			return View(ListModel.Get());
 		}
 
+		/// <summary>
+		/// Gets an edit model for an existing page type or
+		/// creates a new one.
+		/// </summary>
+		/// <param name="id">The optional id</param>
+		/// <returns>The edit model</returns>
 		[Route("pagetype/get/{id:Guid?}")]
 		public ActionResult GetSingle(Guid? id) {
 			if (id.HasValue)
@@ -73,16 +79,8 @@ namespace Piranha.Areas.Manager.Controllers
 				model.Save(api);
 
 				return JsonData(true, model);
-
-				//IsSaved = true;
-				//return RedirectToAction("edit", new { id = model.Id });
 			}
 			return JsonData(false);
-			//if (model.Id.HasValue)
-			//	ViewBag.Title = Piranha.Manager.Resources.PostType.EditTitle;
-			//else ViewBag.Title = Piranha.Manager.Resources.PostType.AddTitle;
-
-			//return View("Edit", model);
 		}
 
 		/// <summary>

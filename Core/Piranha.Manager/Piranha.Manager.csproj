@@ -492,7 +492,6 @@
     <Content Include="Areas\Manager\Views\ConfigMgr\EditorTemplates\ConfigBlock.cshtml" />
     <Content Include="Areas\Manager\Views\PageTypeMgr\List.cshtml" />
     <Content Include="Areas\Manager\Views\PageTypeMgr\Edit.cshtml" />
-    <Content Include="Areas\Manager\Views\PageTypeMgr\EditorTemplates\PagePart.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
