@@ -135,6 +135,32 @@
 .navmenu-inverse .navmenu-nav > li.active a {
   border-bottom: 1px solid #000;
 }
+.with-sidebar .sidebar {
+  float: right;
+  width: 80px;
+  margin-right: 15px;
+}
+.with-sidebar .sidebar a {
+  background: #fff;
+  color: #444;
+  display: block;
+  padding: 10px;
+  font-size: 13px;
+  text-align: center;
+}
+.with-sidebar .sidebar a span {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 24px;
+}
+.with-sidebar .sidebar a:hover {
+  text-decoration: none;
+}
+.with-sidebar .col-sm-12 {
+  float: none;
+  width: auto;
+  margin-right: 110px;
+}
 .nav-pills > li > a {
   border-radius: 0;
   -moz-border-radius: 0;

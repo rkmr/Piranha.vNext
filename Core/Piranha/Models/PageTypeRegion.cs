@@ -21,23 +21,8 @@ using System;
 namespace Piranha.Models
 {
 	/// <summary>
-	/// Base class providing some internal events.
+	/// Regions are used to define the content areas available 
+	/// for a certain page type.
 	/// </summary>
-	public abstract class Model
-	{
-		/// <summary>
-		/// Called when the model is materialized by the DbContext.
-		/// </summary>
-		public virtual void OnLoad() { }
-
-		/// <summary>
-		/// Called before the model is saved by the DbContext.
-		/// </summary>
-		public virtual void OnSave() { }
-
-		/// <summary>
-		/// Called before the model is deleted by the DbContext.
-		/// </summary>
-		public virtual void OnDelete() { }
-	}
+	public sealed class PageTypeRegion : Base.ContentTypePart, Data.IModel { }
 }

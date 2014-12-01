@@ -38,6 +38,13 @@ namespace Piranha.Areas.Manager.Controllers
 			return View(ListModel.Get());
 		}
 
+		[Route("pagetype/get/{id:Guid?}")]
+		public ActionResult GetSingle(Guid? id) {
+			if (id.HasValue)
+				return JsonData(true, EditModel.GetById(api, id.Value));
+			return JsonData(true, new EditModel());
+		}
+
 		/// <summary>
 		/// Gets the edit view for a new or existing page type.
 		/// </summary>
@@ -47,10 +54,10 @@ namespace Piranha.Areas.Manager.Controllers
 		public ActionResult Edit(Guid? id = null) {
 			if (id.HasValue) {
 				ViewBag.Title = Piranha.Manager.Resources.PageType.EditTitle;
-				return View(EditModel.GetById(api, id.Value));
+				return View(id);
 			} else {
 				ViewBag.Title = Piranha.Manager.Resources.PageType.AddTitle;
-				return View(new EditModel());
+				return View(id);
 			}
 		}
 
@@ -61,18 +68,21 @@ namespace Piranha.Areas.Manager.Controllers
 		/// <returns>The view result</returns>
 		[HttpPost]
 		[Route("pagetype/save")]
-		[ValidateAntiForgeryToken]
 		public ActionResult Save(EditModel model) {
 			if (ModelState.IsValid) {
 				model.Save(api);
-				IsSaved = true;
-				return RedirectToAction("edit", new { id = model.Id });
-			}
-			if (model.Id.HasValue)
-				ViewBag.Title = Piranha.Manager.Resources.PostType.EditTitle;
-			else ViewBag.Title = Piranha.Manager.Resources.PostType.AddTitle;
 
-			return View("Edit", model);
+				return JsonData(true, model);
+
+				//IsSaved = true;
+				//return RedirectToAction("edit", new { id = model.Id });
+			}
+			return JsonData(false);
+			//if (model.Id.HasValue)
+			//	ViewBag.Title = Piranha.Manager.Resources.PostType.EditTitle;
+			//else ViewBag.Title = Piranha.Manager.Resources.PostType.AddTitle;
+
+			//return View("Edit", model);
 		}
 
 		/// <summary>

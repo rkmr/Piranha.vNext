@@ -132,14 +132,6 @@ namespace Piranha.Repositories
 		}
 
 		/// <summary>
-		/// Maps the source model to the destination.
-		/// </summary>
-		/// <param name="model">The source model</param>
-		protected virtual T ToDb(T model) {
-			return model;
-		}
-
-		/// <summary>
 		/// Validates the model before storing it in the datastore.
 		/// </summary>
 		/// <param name="model">The current model</param>

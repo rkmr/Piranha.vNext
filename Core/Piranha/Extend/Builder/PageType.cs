@@ -1,154 +1,118 @@
 ﻿/*
  * Piranha CMS
  * Copyright (c) 2014, Håkan Edling, All rights reserved.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 3.0 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library.
  */
 
-using AutoMapper;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Web.Mvc;
 
-namespace Piranha.Manager.Models.PageType
+namespace Piranha.Extend.Builder
 {
 	/// <summary>
-	/// View model for the page type edit view.
+	/// Blass for defining page types through code.
 	/// </summary>
-	public class EditModel
+	public abstract class PageType
 	{
-		#region Inner classes
-		public class PagePart
-		{
-			/// <summary>
-			/// Gets/sets the unique id.
-			/// </summary>
-			public Guid Id { get; set; }
-
-			/// <summary>
-			/// Get/sets the internal id.
-			/// </summary>
-			public string InternalId { get; set; }
-
-			/// <summary>
-			/// Gets/sets the display name.
-			/// </summary>
-			public string Name { get; set; }
-
-			/// <summary>
-			/// Gets/sets the CLR type of the part value.
-			/// </summary>
-			public string CLRType { get; set; }
-
-			/// <summary>
-			/// Gets/sets if this part should support multiple values.
-			/// </summary>
-			public bool IsCollection { get; set; }
-		}
-		#endregion
-
 		#region Properties
-		/// <summary>
-		/// Gets/sets the unique id.
-		/// </summary>
-		public Guid? Id { get; set; }
-
 		/// <summary>
 		/// Gets/sets the unique slug.
 		/// </summary>
-		[StringLength(128)]
 		public string Slug { get; set; }
 
 		/// <summary>
 		/// Gets/sets the display name.
 		/// </summary>
-		[Required, StringLength(128)]
 		public string Name { get; set; }
 
 		/// <summary>
 		/// Gets/sets the optional description.
 		/// </summary>
-		[StringLength(255)]
 		public string Description { get; set; }
 
 		/// <summary>
 		/// Gets/sets the optional route that should handle
 		/// posts of this type.
 		/// </summary>
-		[StringLength(255)]
 		public string Route { get; set; }
 
 		/// <summary>
 		/// Gets/sets the optional view that should render
 		/// posts of this type.
 		/// </summary>
-		[StringLength(255)]
 		public string View { get; set; }
 
 		/// <summary>
 		/// Gets/sets the available regions.
 		/// </summary>
-		public IList<PagePart> Regions { get; set; }
-
-		/// <summary>
-		/// Gets/sets the available region types.
-		/// </summary>
-		public SelectList RegionTypes { get; set; }
+		private IList<ContentPart> Regions { get; set; }
 		#endregion
 
 		/// <summary>
 		/// Default constructor.
 		/// </summary>
-		public EditModel() {
-			Regions = new List<PagePart>();
-			RegionTypes = new SelectList(App.Extensions.Regions, "ValueType", "Name");
+		public PageType() {
+			Regions = new List<ContentPart>();
 		}
 
 		/// <summary>
-		/// Gets the post type model for the given id.
+		/// Adds a new region to the page type.
 		/// </summary>
-		/// <param name="api">The current api</param>
-		/// <param name="id">The unique id</param>
-		/// <returns>The model</returns>
-		public static EditModel GetById(Api api, Guid id) {
-			var type = api.PageTypes.GetSingle(where: t => t.Id == id);
-
-			if (type != null)
-				return Mapper.Map<Piranha.Models.PageType, EditModel>(type);
-			return new EditModel();
+		/// <typeparam name="T">The region type</typeparam>
+		/// <param name="name">The display name</param>
+		/// <param name="internalId">The internal id</param>
+		/// <param name="isCollection">If this region allows multiple values</param>
+		public void AddRegion<T>(string name, string internalId, bool isCollection = false) {
+			Regions.Add(new ContentPart() { 
+				Name = name,
+				InternalId = internalId,
+				IsCollection = isCollection,
+				CLRType = typeof(T).FullName 
+			});
 		}
 
 		/// <summary>
-		/// Saves the current post type.
+		/// Builds the page type in the data store.
 		/// </summary>
 		/// <param name="api">The current api</param>
-		public void Save(Api api) {
-			var newModel = false;
+		internal void Build(Api api) {
+			bool create = false;
 
-			var type = api.PageTypes.GetSingle(where: t => t.Id == Id);
+			// Ensure slug
+			if (String.IsNullOrWhiteSpace(Slug))
+				Slug = Utils.GenerateSlug(Name);
+
+			// Create or update page type
+			var type = api.PageTypes.GetSingle(t => t.Slug == Slug);
 			if (type == null) {
-				type = new Piranha.Models.PageType() {
-					Id = Guid.NewGuid()
+				type = new Models.PageType() {
+					Id = Guid.NewGuid(),
+					Slug = Slug,
 				};
-				newModel = true;
+				create = true;
 			}
-			Mapper.Map<EditModel, Piranha.Models.PageType>(this, type);
+
+			// Map page type
+			type.Name = Name;
+			type.Description = Description;
+			type.Route = Route;
+			type.View = View;
 
 			// Get the removed regions
-			var removed = new List<Piranha.Models.PageTypeRegion>();
+			var removed = new List<Models.PageTypeRegion>();
 			foreach (var region in type.Regions)
 				if (Regions.Where(r => r.InternalId == region.InternalId).SingleOrDefault() == null)
 					removed.Add(region);
@@ -158,7 +122,7 @@ namespace Piranha.Manager.Models.PageType
 				var reg = type.Regions.Where(r => r.InternalId == Regions[n].InternalId).SingleOrDefault();
 
 				if (reg == null) {
-					reg = new Piranha.Models.PageTypeRegion() {
+					reg = new Models.PageTypeRegion() {
 						TypeId = type.Id,
 						InternalId = Regions[n].InternalId
 					};
@@ -174,11 +138,9 @@ namespace Piranha.Manager.Models.PageType
 			foreach (var region in removed)
 				type.Regions.Remove(region);
 
-			if (newModel)
+			// Add the page type if its new
+			if (create)
 				api.PageTypes.Add(type);
-			api.SaveChanges();
-
-			this.Id = type.Id;
 		}
 	}
 }

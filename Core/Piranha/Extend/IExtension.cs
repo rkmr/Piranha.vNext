@@ -18,26 +18,17 @@
 
 using System;
 
-namespace Piranha.Models
+namespace Piranha.Extend
 {
 	/// <summary>
-	/// Base class providing some internal events.
+	/// Interface for all objects that should be treated as extensions.
 	/// </summary>
-	public abstract class Model
+	public interface IExtension
 	{
 		/// <summary>
-		/// Called when the model is materialized by the DbContext.
+		/// Transforms the extensions value for the client models.
 		/// </summary>
-		public virtual void OnLoad() { }
-
-		/// <summary>
-		/// Called before the model is saved by the DbContext.
-		/// </summary>
-		public virtual void OnSave() { }
-
-		/// <summary>
-		/// Called before the model is deleted by the DbContext.
-		/// </summary>
-		public virtual void OnDelete() { }
+		/// <returns>The transformed value</returns>
+		object GetValue();
 	}
 }

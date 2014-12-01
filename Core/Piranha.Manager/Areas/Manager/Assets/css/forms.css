@@ -4,7 +4,13 @@
   font-family: "Open Sans", Arial;
 }
 .table thead tr th.actions.one {
-  width: 16px;
+  width: 32px;
+}
+.table thead tr th.actions.two {
+  width: 64px;
+}
+.table thead tr th.actions.three {
+  width: 96px;
 }
 .table thead tr th .sort {
   cursor: pointer;
@@ -38,6 +44,12 @@
 }
 .table > tbody > tr > td.actions a.delete {
   background: url('../img/ico-delete-16.png') 0 0 no-repeat;
+}
+.table > tbody > tr > td.actions a.down {
+  background: url('../img/ico-arrow-down-16.png') 0 0 no-repeat;
+}
+.table > tbody > tr > td.actions a.up {
+  background: url('../img/ico-arrow-up-16.png') 0 0 no-repeat;
 }
 .table > tbody > tr > td p.meta {
   color: #999999;

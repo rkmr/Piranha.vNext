@@ -63,6 +63,7 @@
     <Compile Include="Repositories\CategoryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\RatingTests.cs" />
+    <Compile Include="ExtensionTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Piranha\Piranha.csproj">

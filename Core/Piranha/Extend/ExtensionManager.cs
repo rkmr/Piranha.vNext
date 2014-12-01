@@ -29,28 +29,153 @@ namespace Piranha.Extend
 	/// </summary>
 	public sealed class ExtensionManager
 	{
+		#region Inner classes
+		/// <summary>
+		/// An imported extension.
+		/// </summary>
+		public sealed class Import
+		{
+			/// <summary>
+			/// Gets the display name.
+			/// </summary>
+			public string Name { get; internal set; }
+
+			/// <summary>
+			/// Gets the CLR value type.
+			/// </summary>
+			public Type ValueType { get; internal set; }
+
+			/// <summary>
+			/// Gets the extension type.
+			/// </summary>
+			public ExtensionType Type { get; internal set; }
+
+			/// <summary>
+			/// Internal constructor.
+			/// </summary>
+			internal Import() { }
+		}		
+		#endregion
+
 		#region Properties
 		/// <summary>
-		/// Gets the available modules.
+		/// Gets/sets the available extensions.
+		/// </summary>
+		private IList<Import> Extensions { get; set; }
+
+		/// <summary>
+		/// Gets the currently imported modules.
 		/// </summary>
 		public IList<IModule> Modules { get; private set; }
+
+		/// <summary>
+		/// Gets the currently imported page types.
+		/// </summary>
+		public IList<Builder.PageType> PageTypes { get; private set; }
+
+		/// <summary>
+		/// Gets the currently imported post types.
+		/// </summary>
+		public IList<Builder.PostType> PostTypes { get; private set; }
+
+		/// <summary>
+		/// Gets the available properties.
+		/// </summary>
+		public IList<Import> Properties {
+			get { return Extensions.Where(i => i.Type.HasFlag(ExtensionType.Property)).OrderBy(i => i.Name).ToList(); }
+		}
+
+		/// <summary>
+		/// Gets the available regions.
+		/// </summary>
+		public IList<Import> Regions {
+			get { return Extensions.Where(i => i.Type.HasFlag(ExtensionType.Region)).OrderBy(i => i.Name).ToList(); }
+		}
 		#endregion
 
 		/// <summary>
 		/// Default internal constructor.
 		/// </summary>
 		internal ExtensionManager() {
+			Extensions = new List<Import>();
 			Modules = new List<IModule>();
+			PageTypes = new List<Builder.PageType>();
+			PostTypes = new List<Builder.PostType>();
 
 			// Scan all assemblies
 			App.Logger.Log(Log.LogLevel.INFO, "ExtensionManager: Scanning assemblies");
 			foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies()) {
 				foreach (var type in assembly.GetTypes()) {
 					if (type.IsClass && !type.IsAbstract) {
-						if (typeof(IModule).IsAssignableFrom(type)) {
+						if (typeof(IExtension).IsAssignableFrom(type)) {
+							//
+							// Extensions
+							//
+							var attr = type.GetCustomAttribute<ExtensionAttribute>();
+							if (attr != null) {
+								Extensions.Add(new Import() {
+									Name = attr.Name,
+									Type = attr.Type,
+									ValueType = type
+								});
+							}
+						} else if (typeof(IModule).IsAssignableFrom(type)) {
+							//
+							// Modules
+							//
 							Modules.Add((IModule)Activator.CreateInstance(type));
+						} else if (typeof(Builder.PageType).IsAssignableFrom(type)) {
+							//
+							// Page types
+							//
+							var attr = type.GetCustomAttribute<BuilderAttribute>();
+							if (attr != null)
+								PageTypes.Add((Builder.PageType)Activator.CreateInstance(type));
+						} else if (typeof(Builder.PostType).IsAssignableFrom(type)) {
+							//
+							// Post types
+							//
+							var attr = type.GetCustomAttribute<BuilderAttribute>();
+							if (attr != null)
+								PostTypes.Add((Builder.PostType)Activator.CreateInstance(type));
 						}
 					} 
+				}
+			}
+
+			if (PageTypes.Count > 0) {
+				// Build page types
+				App.Logger.Log(Log.LogLevel.INFO, "ExtensionManager: Building page types");
+
+				using (var api = new Api()) {
+					foreach (var type in PageTypes) {
+						App.Logger.Log(Log.LogLevel.INFO, "ExtensionManager: > " + type.Name);
+
+						try {
+							type.Build(api);
+						} catch (Exception ex) {
+							App.Logger.Log(Log.LogLevel.ERROR, "ExtensionManager: Error building page type" + type.Name, ex);
+						}
+					}
+					api.SaveChanges();
+				}
+			}
+
+			if (PostTypes.Count > 0) {
+				// Build post types
+				App.Logger.Log(Log.LogLevel.INFO, "ExtensionManager: Building post types");
+
+				using (var api = new Api()) {
+					foreach (var type in PostTypes) {
+						App.Logger.Log(Log.LogLevel.INFO, "ExtensionManager: > " + type.Name);
+
+						try {
+							type.Build(api);
+						} catch (Exception ex) {
+							App.Logger.Log(Log.LogLevel.ERROR, "ExtensionManager: Error building post type" + type.Name, ex);
+						}
+					}
+					api.SaveChanges();
 				}
 			}
 

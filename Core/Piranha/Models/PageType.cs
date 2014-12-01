@@ -18,11 +18,41 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Piranha.Models
 {
 	/// <summary>
 	/// Page types are used to define different kinds of pages.
 	/// </summary>
-	public sealed class PageType : Base.ContentType, Data.IModel, Data.IChanges { }
+	public sealed class PageType : Base.ContentType, Data.IModel, Data.IChanges
+	{
+		#region Properties
+		/// <summary>
+		/// Gets/sets the available regions.
+		/// </summary>
+		public IList<PageTypeRegion> Regions { get; set; }
+		#endregion
+
+		/// <summary>
+		/// Default constructor.
+		/// </summary>
+		public PageType() {
+			Regions = new List<PageTypeRegion>();
+		}
+
+		#region Events
+		/// <summary>
+		/// Called before the model is saved by the DbContext.
+		/// </summary>
+		public override void OnSave() {
+			// Order regions
+			Regions = Regions.OrderBy(r => r.Order).ToList();
+
+			// Ensure region id
+			foreach (var reg in Regions)
+				reg.Id = reg.Id == Guid.Empty ? Guid.NewGuid() : reg.Id;
+		}
+		#endregion
+	}
 }

@@ -17,27 +17,39 @@
  */
 
 using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Piranha.Models
+namespace Piranha.Tests
 {
 	/// <summary>
-	/// Base class providing some internal events.
+	/// Tests for extensions
 	/// </summary>
-	public abstract class Model
+	[TestClass]
+	public class ExtensionTests
 	{
 		/// <summary>
-		/// Called when the model is materialized by the DbContext.
+		/// Default constructor.
 		/// </summary>
-		public virtual void OnLoad() { }
+		public ExtensionTests() {
+			App.Init();
+		}
 
 		/// <summary>
-		/// Called before the model is saved by the DbContext.
+		/// Checks that all of the properties have been imported properly
 		/// </summary>
-		public virtual void OnSave() { }
+		[TestMethod]
+		[TestCategory("Extensions")]
+		public void Properties() {
+			Assert.AreEqual(5, App.Extensions.Properties.Count);
+		}
 
 		/// <summary>
-		/// Called before the model is deleted by the DbContext.
+		/// Checks that all of the regions have been imported properly
 		/// </summary>
-		public virtual void OnDelete() { }
+		[TestMethod]
+		[TestCategory("Extensions")]
+		public void Regions() {
+			Assert.AreEqual(3, App.Extensions.Regions.Count);
+		}
 	}
 }

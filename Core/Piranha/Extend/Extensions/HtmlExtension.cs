@@ -18,26 +18,17 @@
 
 using System;
 
-namespace Piranha.Models
+namespace Piranha.Extend.Extensions
 {
 	/// <summary>
-	/// Base class providing some internal events.
+	/// Html extension.
 	/// </summary>
-	public abstract class Model
+	[Extension(Name="Html", Type=ExtensionType.Region)]
+	public class HtmlExtension : SimpleExtension<string>, IExtension
 	{
 		/// <summary>
-		/// Called when the model is materialized by the DbContext.
+		/// Default constructor.
 		/// </summary>
-		public virtual void OnLoad() { }
-
-		/// <summary>
-		/// Called before the model is saved by the DbContext.
-		/// </summary>
-		public virtual void OnSave() { }
-
-		/// <summary>
-		/// Called before the model is deleted by the DbContext.
-		/// </summary>
-		public virtual void OnDelete() { }
+		public HtmlExtension() : base(v => v) { }
 	}
 }

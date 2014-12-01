@@ -18,26 +18,24 @@
 
 using System;
 
-namespace Piranha.Models
+namespace Piranha.Extend
 {
 	/// <summary>
-	/// Base class providing some internal events.
+	/// Attribute for marking a class as an extension that should be
+	/// imported by the extension manager.
 	/// </summary>
-	public abstract class Model
+	public sealed class ExtensionAttribute : Attribute
 	{
+		#region Properties
 		/// <summary>
-		/// Called when the model is materialized by the DbContext.
+		/// Gets/sets the display name.
 		/// </summary>
-		public virtual void OnLoad() { }
+		public string Name { get; set; }
 
 		/// <summary>
-		/// Called before the model is saved by the DbContext.
+		/// Gets/sets the extension type.
 		/// </summary>
-		public virtual void OnSave() { }
-
-		/// <summary>
-		/// Called before the model is deleted by the DbContext.
-		/// </summary>
-		public virtual void OnDelete() { }
+		public ExtensionType Type { get; set; }
+		#endregion
 	}
 }

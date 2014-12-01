@@ -18,26 +18,11 @@
 
 using System;
 
-namespace Piranha.Models
+namespace Piranha.Extend
 {
 	/// <summary>
-	/// Base class providing some internal events.
+	/// Attribute used for signal that a class should be
+	/// imported by the type builder.
 	/// </summary>
-	public abstract class Model
-	{
-		/// <summary>
-		/// Called when the model is materialized by the DbContext.
-		/// </summary>
-		public virtual void OnLoad() { }
-
-		/// <summary>
-		/// Called before the model is saved by the DbContext.
-		/// </summary>
-		public virtual void OnSave() { }
-
-		/// <summary>
-		/// Called before the model is deleted by the DbContext.
-		/// </summary>
-		public virtual void OnDelete() { }
-	}
+	public sealed class BuilderAttribute : Attribute { }
 }

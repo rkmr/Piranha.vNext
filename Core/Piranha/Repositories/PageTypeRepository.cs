@@ -44,6 +44,16 @@ namespace Piranha.Repositories
 		}
 
 		/// <summary>
+		/// Maps the source model to the destination.
+		/// </summary>
+		/// <param name="model">The source model</param>
+		protected override Models.PageType FromDb(Models.PageType model) {
+			model.Regions = model.Regions.OrderBy(r => r.Order).ToList();
+
+			return model;
+		}
+
+		/// <summary>
 		/// Orders the page type query by name.
 		/// </summary>
 		/// <param name="query">The query</param>

@@ -7492,6 +7492,32 @@ a {
 .navmenu-inverse .navmenu-nav > li.active a {
   border-bottom: 1px solid #000;
 }
+.with-sidebar .sidebar {
+  float: right;
+  width: 80px;
+  margin-right: 15px;
+}
+.with-sidebar .sidebar a {
+  background: #fff;
+  color: #444;
+  display: block;
+  padding: 10px;
+  font-size: 13px;
+  text-align: center;
+}
+.with-sidebar .sidebar a span {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 24px;
+}
+.with-sidebar .sidebar a:hover {
+  text-decoration: none;
+}
+.with-sidebar .col-sm-12 {
+  float: none;
+  width: auto;
+  margin-right: 110px;
+}
 .nav-pills > li > a {
   border-radius: 0;
   -moz-border-radius: 0;
@@ -7511,7 +7537,13 @@ a {
   font-family: "Open Sans", Arial;
 }
 .table thead tr th.actions.one {
-  width: 16px;
+  width: 32px;
+}
+.table thead tr th.actions.two {
+  width: 64px;
+}
+.table thead tr th.actions.three {
+  width: 96px;
 }
 .table thead tr th .sort {
   cursor: pointer;
@@ -7545,6 +7577,12 @@ a {
 }
 .table > tbody > tr > td.actions a.delete {
   background: url('../img/ico-delete-16.png') 0 0 no-repeat;
+}
+.table > tbody > tr > td.actions a.down {
+  background: url('../img/ico-arrow-down-16.png') 0 0 no-repeat;
+}
+.table > tbody > tr > td.actions a.up {
+  background: url('../img/ico-arrow-up-16.png') 0 0 no-repeat;
 }
 .table > tbody > tr > td p.meta {
   color: #999999;

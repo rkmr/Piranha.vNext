@@ -299,11 +299,12 @@ namespace Piranha
 						extensions = new Extend.ExtensionManager();
 
 						// Seed default data
-						Logger.Log(Log.LogLevel.INFO, "App.Init: Seeding default data");
-						using (var api = new Api()) {
-							Data.Seed.Params(api);
+						if (config.Store != null) {
+							Logger.Log(Log.LogLevel.INFO, "App.Init: Seeding default data");
+							using (var api = new Api()) {
+								Data.Seed.Params(api);
+							}
 						}
-
 						IsInitialized = true;
 					}
 				}

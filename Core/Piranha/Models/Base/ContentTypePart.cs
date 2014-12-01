@@ -18,26 +18,48 @@
 
 using System;
 
-namespace Piranha.Models
+namespace Piranha.Models.Base
 {
 	/// <summary>
-	/// Base class providing some internal events.
+	/// Base class for defining content type parts.
 	/// </summary>
-	public abstract class Model
+	public abstract class ContentTypePart : Model, Data.IModel
 	{
+		#region Properties
 		/// <summary>
-		/// Called when the model is materialized by the DbContext.
+		/// Gets/sets the unique id.
 		/// </summary>
-		public virtual void OnLoad() { }
+		public Guid Id { get; set; }
 
 		/// <summary>
-		/// Called before the model is saved by the DbContext.
+		/// Gets/sets the id of the content type.
 		/// </summary>
-		public virtual void OnSave() { }
+		public Guid TypeId { get; set; }
 
 		/// <summary>
-		/// Called before the model is deleted by the DbContext.
+		/// Get/sets the internal id.
 		/// </summary>
-		public virtual void OnDelete() { }
+		public string InternalId { get; set; }
+
+		/// <summary>
+		/// Gets/sets the display name.
+		/// </summary>
+		public string Name { get; set; }
+
+		/// <summary>
+		/// Gets/sets the CLR type of the part value.
+		/// </summary>
+		public string CLRType { get; set; }
+
+		/// <summary>
+		/// Gets/sets if this part should support multiple values.
+		/// </summary>
+		public bool IsCollection { get; set; }
+
+		/// <summary>
+		/// Gets/sets the current sort order.
+		/// </summary>
+		public int Order { get; set; }
+		#endregion
 	}
 }

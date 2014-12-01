@@ -1,15 +1,17 @@
-﻿@model Piranha.Manager.Models.PageType.EditModel
+﻿@model Guid?
+@section script {
+	<script type="text/javascript">
+		ko.applyBindings(new manager.models.pagetype('@Model'));
+	</script>
+}
 
 @using (var form = Html.BeginForm("Save", "PageTypeMgr", FormMethod.Post, new { @class = "form", @role = "form" })) {
-	@Html.AntiForgeryToken()
-	@Html.HiddenFor(m => m.Id)
-
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-sm-12 buttons">
 				<!-- Actions -->
 				<div class="btn-group">
-					<button type="submit" class="btn btn-labeled btn-success">
+					<button type="submit" class="btn btn-labeled btn-success" data-bind="click: save">
 						<span class="btn-label">
 							<i class="glyphicon glyphicon-ok"></i>
 						</span>@Piranha.Manager.Resources.Global.Save
@@ -21,32 +23,88 @@
 		<div class="row">
 			<div class="col-sm-12">
 				<div class="form-group">
-					@Html.TextBoxFor(m => m.Name, new { @class = "form-control title", @placeholder = "Add name" })
-					@Html.ValidationMessageFor(m => m.Name)
+					<input name="Name" type="text" class="form-control title" placeholder="Add name" data-bind="value: name" />
 				</div>
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-sm-8">
 				<div class="form-group">
-					@Html.TextAreaFor(m => m.Description, new { @class = "form-control count-me", @rows = 4, @placeholder = "Add optional description" })
-					<p><span>@(!String.IsNullOrEmpty(Model.Description) ? Model.Description.Length : 0)</span>/255 characters</p>
-					@Html.ValidationMessageFor(m => m.Description)
+					<textarea name="Description" class="form-control count-me" rows="4" placeholder="Add optional description" data-bind="value: description"></textarea>
+					<p><span data-bind="text: descriptionLength"></span>/255 characters</p>
 				</div>
 			</div>
 			<div class="col-sm-4">
 				<div class="form-group">
-					@Html.TextBoxFor(m => m.Slug, new { @class = "form-control meta", @placeholder = "Slug will be generated automatically" })
-					@Html.ValidationMessageFor(m => m.Slug)
+					<input name="Slug" type="text" class="form-control meta" placeholder="Slug will be generated automatically" data-bind="value: slug" />
 				</div>
 				<div class="form-group">
-					@Html.TextBoxFor(m => m.Route, new { @class = "form-control meta", @placeholder = "Add optional route" })
-					@Html.ValidationMessageFor(m => m.Route)
+					<input name="Route" type="text" class="form-control meta" placeholder="Add optional route" data-bind="value: route" />
 				</div>
 				<div class="form-group">
-					@Html.TextBoxFor(m => m.View, new { @class = "form-control meta", @placeholder = "Add optional view" })
-					@Html.ValidationMessageFor(m => m.View)
+					<input name="View" type="text" class="form-control meta" placeholder="Add optional view" data-bind="value: view" />
 				</div>
+			</div>
+		</div>
+
+		<div class="row with-sidebar">
+			<div class="sidebar">
+				<a href="#"><span class="glyphicon glyphicon-leaf"></span>Regions</a>
+			</div>
+			<div class="col-sm-12">	
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th>Internal id</th>
+							<th>Collection</th>
+							<th>Type</th>
+							<th class="actions three"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<!-- ko foreach: { data: regions, as: 'region' } -->
+						<tr>
+							<td>
+								<input type="text" class="form-control" data-bind="value: region.Name" />
+							</td>
+							<td>
+								<input type="text" class="form-control" data-bind="value: region.InternalId" />
+							</td>
+							<td>
+								<input type="checkbox" data-bind="checked: region.IsCollection" />
+							</td>
+							<td>
+								<select class="form-control" data-bind="options: $root.regionTypes, optionsText: 'Text', value: region.CLRType">
+								</select>
+							</td>
+							<td class="actions">
+								<a href="#" class="up" data-bind="click: function() { $root.regionUp(region); }"></a>
+								<a href="#" class="down" data-bind="click: function() { $root.regionDown(region); }"></a>
+								<a href="#" class="delete" data-bind="click: function() { $root.regionDelete(region); }"></a>
+							</td>
+						</tr>
+						<!-- /ko -->
+						<tr>
+							<td>
+								<input type="text" class="form-control" data-bind="value: newRegionName" placeholder="Display name" />
+							</td>
+							<td>
+								<input type="text" class="form-control" data-bind="value: newRegionId" placeholder="Internal id" />
+							</td>
+							<td>
+								<input type="checkbox" data-bind="checked: newRegionCollection" />
+							</td>
+							<td>
+								<select class="form-control" data-bind="options: $root.regionTypes, optionsText: 'Text', value: newRegionType, optionsCaption: 'Choose type'">
+								</select>
+							</td>
+							<td>
+								<button class="btn btn-primary" data-bind="click: regionAdd">Add</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
 		</div>
 	</div>

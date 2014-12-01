@@ -18,26 +18,42 @@
 
 using System;
 
-namespace Piranha.Models
+namespace Piranha.Extend.Extensions
 {
 	/// <summary>
-	/// Base class providing some internal events.
+	/// Base class for creating a simple extension.
 	/// </summary>
-	public abstract class Model
+	/// <typeparam name="T">The value type</typeparam>
+	public abstract class SimpleExtension<T> : IExtension
 	{
+		#region Members
 		/// <summary>
-		/// Called when the model is materialized by the DbContext.
+		/// The private value formatter.
 		/// </summary>
-		public virtual void OnLoad() { }
+		private readonly Func<T, object> FormatValue;
+		#endregion
+
+		#region Properties
+		/// <summary>
+		/// Gets/sets the value.
+		/// </summary>
+		public T Value { get; set; }
+		#endregion
 
 		/// <summary>
-		/// Called before the model is saved by the DbContext.
+		/// Default constructor.
 		/// </summary>
-		public virtual void OnSave() { }
+		/// <param name="formatter">The value formatter</param>
+		public SimpleExtension(Func<T, object> formatter) {
+			FormatValue = formatter;
+		}
 
 		/// <summary>
-		/// Called before the model is deleted by the DbContext.
+		/// Transforms the extensions value for the client models.
 		/// </summary>
-		public virtual void OnDelete() { }
+		/// <returns>The transformed value</returns>
+		public object GetValue() {
+			return FormatValue(Value);
+		}
 	}
 }

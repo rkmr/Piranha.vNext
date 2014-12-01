@@ -18,26 +18,33 @@
 
 using System;
 
-namespace Piranha.Models
+namespace Piranha.Extend.Builder
 {
 	/// <summary>
-	/// Base class providing some internal events.
+	/// Content parts are used to build up content.
 	/// </summary>
-	public abstract class Model
+	internal sealed class ContentPart
 	{
+		#region Properties
 		/// <summary>
-		/// Called when the model is materialized by the DbContext.
+		/// Gets/sets the display name.
 		/// </summary>
-		public virtual void OnLoad() { }
+		public string Name { get; set; }
 
 		/// <summary>
-		/// Called before the model is saved by the DbContext.
+		/// Gets/sets the internal id.
 		/// </summary>
-		public virtual void OnSave() { }
+		public string InternalId { get; set; }
 
 		/// <summary>
-		/// Called before the model is deleted by the DbContext.
+		/// Gets/sets if this part accepts multiple values.
 		/// </summary>
-		public virtual void OnDelete() { }
+		public bool IsCollection { get; set; }
+
+		/// <summary>
+		/// Gets/sets the CLR type of the value(s).
+		/// </summary>
+		public string CLRType { get; set; }
+		#endregion
 	}
 }
