@@ -195,7 +195,11 @@ namespace Piranha
 		/// <summary>
 		/// Private constructor.
 		/// </summary>
-		private App() { }
+		private App() {
+			config = new Config() { 
+				Log = new Log.LogQueue()
+			};
+		}
 
 		/// <summary>
 		/// Initializes Piranha CMS.
@@ -219,13 +223,19 @@ namespace Piranha
 			if (!IsInitialized) {
 				lock (mutex) {
 					if (!IsInitialized) {
-						// Store configuration
-						this.config = config;
+						// Get temporary log query
+						var queue = (Log.LogQueue)this.config.Log;
 
 						// Register logger
 						if (config.Log == null)
 							config.Log = new Log.FileLog();
 						Logger.Log(Log.LogLevel.INFO, "App.Init: Starting application");
+
+						// Store configuration
+						this.config = config;
+	
+						// Dump queued log messages
+						queue.Dump(config.Log);
 
 						// Configure auto mapper
 						Mapper.CreateMap<Models.Comment, Client.Models.CommentModel>()

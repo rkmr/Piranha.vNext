@@ -84,6 +84,7 @@
     <Compile Include="Log\FileLog.cs" />
     <Compile Include="Log\ILog.cs" />
     <Compile Include="Log\LogLevel.cs" />
+    <Compile Include="Log\LogQueue.cs" />
     <Compile Include="Manager\Config.cs" />
     <Compile Include="Manager\Menu.cs" />
     <Compile Include="Models\Alias.cs" />
