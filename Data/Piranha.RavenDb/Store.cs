@@ -49,6 +49,9 @@ namespace Piranha.RavenDb
 			if (waitForStaleResults)
 				((DocumentStore)store).RegisterListener(new NoStaleQueriesListener());
 
+			// Apply external config
+			ApplyExternalConfig(store);
+
 			// Initialize
 			store.Initialize();
 		}
@@ -193,6 +196,32 @@ namespace Piranha.RavenDb
 			/// <param name="entityInstance">The entity instance.</param>
 			/// <param name="metadata">The metadata.</param>
 			public void AfterStore(string key, object entityInstance, RavenJObject metadata) { }
+		}
+		#endregion
+
+		#region External config
+		/// <summary>
+		/// Applies external configuration to data store.
+		/// </summary>
+		/// <param name="store">The current store</param>
+		private void ApplyExternalConfig(IDocumentStore store) {
+			App.Logger.Log(Log.LogLevel.INFO, "RavenDb.Store.ApplyExternalConfig: Scanning assemblies");
+
+			foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies()) {
+				try {
+					foreach (var type in assembly.GetTypes()) {
+						if (type.IsClass && !type.IsAbstract) {
+							if (typeof(IRavenConfig).IsAssignableFrom(type)) {
+								App.Logger.Log(Log.LogLevel.INFO, "RavenDb.Store.ApplyExternalConfig: Applying config for " + type.FullName);
+								var config = (IRavenConfig)Activator.CreateInstance(type);
+								config.InitStore(store);
+							}
+						}
+					}
+				} catch (Exception ex) {
+					App.Logger.Log(Log.LogLevel.ERROR, "RavenDb.Store.ApplyExternalConfig: Error getting types for " + assembly.FullName, ex);
+				}
+			}
 		}
 		#endregion
 	}
