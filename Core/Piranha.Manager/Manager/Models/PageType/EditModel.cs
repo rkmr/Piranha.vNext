@@ -150,15 +150,16 @@ namespace Piranha.Manager.Models.PageType
 			// Get the removed regions
 			var removed = new List<Piranha.Models.PageTypeRegion>();
 			foreach (var region in type.Regions)
-				if (Regions.Where(r => r.InternalId == region.InternalId).SingleOrDefault() == null)
+				if (Regions.Where(r => r.Id == region.Id).SingleOrDefault() == null)
 					removed.Add(region);
 
 			// Map existing regions
 			for (var n = 0; n < Regions.Count; n++) {
-				var reg = type.Regions.Where(r => r.InternalId == Regions[n].InternalId).SingleOrDefault();
+				var reg = type.Regions.Where(r => r.Id == Regions[n].Id).SingleOrDefault();
 
 				if (reg == null) {
 					reg = new Piranha.Models.PageTypeRegion() {
+						Id = Guid.NewGuid(),
 						TypeId = type.Id,
 						InternalId = Regions[n].InternalId
 					};
@@ -171,8 +172,9 @@ namespace Piranha.Manager.Models.PageType
 			}
 
 			// Delete removed regions
-			foreach (var region in removed)
+			foreach (var region in removed) {
 				type.Regions.Remove(region);
+			}
 
 			if (newModel)
 				api.PageTypes.Add(type);

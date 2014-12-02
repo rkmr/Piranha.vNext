@@ -80,6 +80,7 @@ manager.models.pagetype = function (id) {
 		// Add the current region
 		for (var n = 0; n < self.regions().length; n++) {
 			data.Regions.push({
+				Id: self.regions()[n].Id,
 				Name: self.regions()[n].Name,
 				InternalId: self.regions()[n].InternalId,
 				IsCollection: self.regions()[n].IsCollection,

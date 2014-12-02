@@ -31,14 +31,14 @@ namespace Piranha.Models
 		/// <summary>
 		/// Gets/sets the available regions.
 		/// </summary>
-		public IList<PageTypeRegion> Regions { get; set; }
+		public StateList<PageTypeRegion> Regions { get; set; }
 		#endregion
 
 		/// <summary>
 		/// Default constructor.
 		/// </summary>
 		public PageType() {
-			Regions = new List<PageTypeRegion>();
+			Regions = new StateList<PageTypeRegion>();
 		}
 
 		#region Events
@@ -47,7 +47,7 @@ namespace Piranha.Models
 		/// </summary>
 		public override void OnSave() {
 			// Order regions
-			Regions = Regions.OrderBy(r => r.Order).ToList();
+			Regions = Regions.OrderBy(r => r.Order).ToStateList();
 
 			// Ensure region id
 			foreach (var reg in Regions)

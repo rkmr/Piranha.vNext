@@ -108,6 +108,7 @@
     <Compile Include="Models\PostType.cs" />
     <Compile Include="Models\Rating.cs" />
     <Compile Include="Models\RatingType.cs" />
+    <Compile Include="Models\StateList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\AliasRepository.cs" />
     <Compile Include="Repositories\BlockRepository.cs" />
