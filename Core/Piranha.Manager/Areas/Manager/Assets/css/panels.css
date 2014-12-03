@@ -40,23 +40,6 @@
 .panel.panel-white .row:last-child .form-group:last-child {
   margin-bottom: 0;
 }
-.panel.panel-white .form-group {
-  border: 0;
-}
-.panel.panel-white .form-group input {
-  background: #eee;
-  _padding: 10px 12px;
-  border-bottom: 1px solid #dddddd;
-}
-.panel.panel-white .form-group input::-webkit-input-placeholder,
-.panel.panel-white .form-group input:-moz-placeholder,
-.panel.panel-white .form-group input::-moz-placeholder,
-.panel.panel-white .form-group input:-ms-input-placeholder {
-  color: #ccc;
-}
-.panel.panel-white .form-group textarea {
-  background: #eee;
-}
 .panel.panel-add > .panel-heading {
   padding: 0;
 }

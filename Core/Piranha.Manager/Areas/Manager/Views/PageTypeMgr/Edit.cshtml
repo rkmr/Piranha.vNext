@@ -1,7 +1,10 @@
 ﻿@model Guid?
 @section script {
 	<script type="text/javascript">
-		ko.applyBindings(new manager.models.pagetype('@Model'));
+		ko.applyBindings(new manager.models.pagetype('@Model', {
+			required: 'Field is required',
+			unique: 'Field has to be unique'
+		}));
 	</script>
 }
 
@@ -88,16 +91,31 @@
 						<!-- /ko -->
 						<tr>
 							<td>
-								<input type="text" class="form-control" data-bind="value: newRegionName" placeholder="Display name" />
+								<div class="form-group">
+									<input type="text" class="form-control" data-bind="value: newRegionName" placeholder="Display name" />
+									<!-- ko if: newRegionNameError -->
+									<span class="field-validation-error" data-bind="text: newRegionNameError"></span>
+									<!-- /ko -->
+								</div>
 							</td>
 							<td>
-								<input type="text" class="form-control" data-bind="value: newRegionId" placeholder="Internal id" />
+								<div class="form-group">
+									<input type="text" class="form-control" data-bind="value: newRegionId" placeholder="Internal id" />
+									<!-- ko if: newRegionIdError -->
+									<span class="field-validation-error" data-bind="text: newRegionIdError"></span>
+									<!-- /ko -->
+								</div>
 							</td>
 							<td>
 								<input type="checkbox" data-bind="checked: newRegionCollection" />
 							</td>
 							<td>
-								<select class="form-control" data-bind="options: $root.regionTypes, optionsText: 'Text', value: newRegionType, optionsCaption: 'Choose type'"></select>
+								<div class="form-group">
+									<select class="form-control" data-bind="options: $root.regionTypes, optionsText: 'Text', value: newRegionType, optionsCaption: 'Choose type'"></select>
+									<!-- ko if: newRegionTypeError -->
+									<span class="field-validation-error" data-bind="text: newRegionTypeError"></span>
+									<!-- /ko -->
+								</div>
 							</td>
 							<td>
 								<button class="btn btn-primary" data-bind="click: regionAdd">Add</button>
@@ -141,16 +159,31 @@
 						<!-- /ko -->
 						<tr>
 							<td>
-								<input type="text" class="form-control" data-bind="value: newPropertyName" placeholder="Display name" />
+								<div class="form-group">
+									<input type="text" class="form-control" data-bind="value: newPropertyName" placeholder="Display name" />
+									<!-- ko if: newPropertyNameError -->
+									<span class="field-validation-error" data-bind="text: newPropertyNameError"></span>
+									<!-- /ko -->
+								</div>
 							</td>
 							<td>
-								<input type="text" class="form-control" data-bind="value: newPropertyId" placeholder="Internal id" />
+								<div class="form-group">
+									<input type="text" class="form-control" data-bind="value: newPropertyId" placeholder="Internal id" />
+									<!-- ko if: newPropertyIdError -->
+									<span class="field-validation-error" data-bind="text: newPropertyIdError"></span>
+									<!-- /ko -->
+								</div>
 							</td>
 							<td>
 								<input type="checkbox" data-bind="checked: newPropertyCollection" />
 							</td>
 							<td>
-								<select class="form-control" data-bind="options: $root.propertyTypes, optionsText: 'Text', value: newPropertyType, optionsCaption: 'Choose type'"></select>
+								<div class="form-group">
+									<select class="form-control" data-bind="options: $root.propertyTypes, optionsText: 'Text', value: newPropertyType, optionsCaption: 'Choose type'"></select>
+									<!-- ko if: newPropertyTypeError -->
+									<span class="field-validation-error" data-bind="text: newPropertyTypeError"></span>
+									<!-- /ko -->
+								</div>
 							</td>
 							<td>
 								<button class="btn btn-primary" data-bind="click: propertyAdd">Add</button>

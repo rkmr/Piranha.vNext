@@ -336,6 +336,42 @@
 			}
 		}
 	}
+
+	.panel-white, .table {
+		.form-group {
+			border: 0;
+
+			input, select {
+				background: #eee;
+				border-bottom: 1px solid @border-color;
+
+				&::-webkit-input-placeholder,
+				&:-moz-placeholder,
+				&::-moz-placeholder,
+				&:-ms-input-placeholder {  
+					color: #ccc;
+				}
+
+				&:focus {
+					background: #dee;
+				}
+			}
+
+			textarea {
+				background: #eee;
+			}
+		}
+	}
+
+	.table {
+		.form-group {
+			margin-bottom: 0;
+
+			input, select, textarea {
+				font-size: 14px;
+			}
+		}
+	}
 }
 
 .btn {

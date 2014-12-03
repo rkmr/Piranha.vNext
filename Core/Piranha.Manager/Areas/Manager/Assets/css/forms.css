@@ -238,6 +238,53 @@
 .form .form-group .mce-tinymce .mce-edit-area {
   border-top: 0 none;
 }
+.form .panel-white .form-group,
+.form .table .form-group {
+  border: 0;
+}
+.form .panel-white .form-group input,
+.form .table .form-group input,
+.form .panel-white .form-group select,
+.form .table .form-group select {
+  background: #eee;
+  border-bottom: 1px solid #dddddd;
+}
+.form .panel-white .form-group input::-webkit-input-placeholder,
+.form .table .form-group input::-webkit-input-placeholder,
+.form .panel-white .form-group select::-webkit-input-placeholder,
+.form .table .form-group select::-webkit-input-placeholder,
+.form .panel-white .form-group input:-moz-placeholder,
+.form .table .form-group input:-moz-placeholder,
+.form .panel-white .form-group select:-moz-placeholder,
+.form .table .form-group select:-moz-placeholder,
+.form .panel-white .form-group input::-moz-placeholder,
+.form .table .form-group input::-moz-placeholder,
+.form .panel-white .form-group select::-moz-placeholder,
+.form .table .form-group select::-moz-placeholder,
+.form .panel-white .form-group input:-ms-input-placeholder,
+.form .table .form-group input:-ms-input-placeholder,
+.form .panel-white .form-group select:-ms-input-placeholder,
+.form .table .form-group select:-ms-input-placeholder {
+  color: #ccc;
+}
+.form .panel-white .form-group input:focus,
+.form .table .form-group input:focus,
+.form .panel-white .form-group select:focus,
+.form .table .form-group select:focus {
+  background: #dee;
+}
+.form .panel-white .form-group textarea,
+.form .table .form-group textarea {
+  background: #eee;
+}
+.form .table .form-group {
+  margin-bottom: 0;
+}
+.form .table .form-group input,
+.form .table .form-group select,
+.form .table .form-group textarea {
+  font-size: 14px;
+}
 .btn {
   border-radius: 0;
   -moz-border-radius: 0;

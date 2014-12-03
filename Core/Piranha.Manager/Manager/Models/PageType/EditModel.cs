@@ -177,7 +177,7 @@ namespace Piranha.Manager.Models.PageType
 		/// <typeparam name="T">The part type</typeparam>
 		/// <param name="oldParts">The old parts</param>
 		/// <param name="newParts">The new parts</param>
-		private void MapParts<T>(IList<T> oldParts, IList<PagePart> newParts) where T : Piranha.Models.Base.ContentTypePart {
+		private void MapParts<T>(Piranha.Models.StateList<T> oldParts, IList<PagePart> newParts) where T : Piranha.Models.Base.ContentTypePart {
 			// Get the removed part
 			var removed = new List<T>();
 			foreach (var part in oldParts)

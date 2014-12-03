@@ -7607,10 +7607,13 @@ if (!manager.models)
 //
 // Page tye view model
 //
-manager.models.pagetype = function (id) {
+manager.models.pagetype = function (id, locale) {
 	'use strict';
 
 	var self = window.pagetype = this;
+
+	// Local
+	self.locale = locale;
 
 	// Members
 	self.id = ko.observable('');
@@ -7625,14 +7628,20 @@ manager.models.pagetype = function (id) {
 	self.regionTypes = ko.observableArray([]);
 
 	self.newRegionName = ko.observable('');
+	self.newRegionNameError = ko.observable('');
 	self.newRegionId = ko.observable('');
+	self.newRegionIdError = ko.observable('');
 	self.newRegionCollection = ko.observable(false);
 	self.newRegionType = ko.observable('');
+	self.newRegionTypeError = ko.observable('');
 
 	self.newPropertyName = ko.observable('');
+	self.newPropertyNameError = ko.observable('');
 	self.newPropertyId = ko.observable('');
+	self.newPropertyIdError = ko.observable('');
 	self.newPropertyCollection = ko.observable(false);
 	self.newPropertyType = ko.observable('');
+	self.newPropertyTypeError = ko.observable('');
 
 
 	// Computed members
@@ -7737,6 +7746,34 @@ manager.models.pagetype = function (id) {
 
 	// Adds a new region to the list
 	self.regionAdd = function () {
+		self.newRegionNameError('');
+		self.newRegionIdError('');
+		self.newRegionTypeError('');
+		var error = false;
+
+		if (self.newRegionName() == '') {
+			self.newRegionNameError(locale.required);
+			error = true;
+		}
+		if (self.newRegionId() == '') {
+			self.newRegionIdError(locale.required);
+			error = true;
+		} else {
+			for (var n = 0; n < self.regions().length; n++) {
+				if (self.regions()[n].InternalId == self.newRegionId()) {
+					self.newRegionIdError(locale.unique);
+					error = true;
+				}
+			}
+		}
+		if (self.newRegionType() == undefined) {
+			self.newRegionTypeError(locale.required);
+			error = true;
+		}
+
+		if (error)
+			return;
+
 		self.regions().push({
 			Name: self.newRegionName(),
 			InternalId: self.newRegionId(),
@@ -7780,6 +7817,34 @@ manager.models.pagetype = function (id) {
 
 	// Adds a new property to the list
 	self.propertyAdd = function () {
+		self.newPropertyNameError('');
+		self.newPropertyIdError('');
+		self.newPropertyTypeError('');
+		var error = false;
+
+		if (self.newPropertyName() == '') {
+			self.newPropertyNameError(locale.required);
+			error = true;
+		}
+		if (self.newPropertyId() == '') {
+			self.newPropertyIdError(locale.required);
+			error = true;
+		} else {
+			for (var n = 0; n < self.properties().length; n++) {
+				if (self.properties()[n].InternalId == self.newPropertyId()) {
+					self.newPropertyIdError(locale.unique);
+					error = true;
+				}
+			}
+		}
+		if (self.newPropertyType() == undefined) {
+			self.newPropertyTypeError(locale.required);
+			error = true;
+		}
+
+		if (error)
+			return;
+
 		self.properties().push({
 			Name: self.newPropertyName(),
 			InternalId: self.newPropertyId(),
