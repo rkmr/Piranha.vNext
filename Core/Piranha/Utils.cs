@@ -181,7 +181,7 @@ namespace Piranha
 		/// </summary>
 		/// <returns>The file version</returns>
 		public static string GetFileVersion() {
-			return FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).ProductVersion;
+			return FileVersionInfo.GetVersionInfo(typeof(Utils).GetTypeInfo().Assembly.Location).ProductVersion;
 		}
 
 		/// <summary>
@@ -189,7 +189,7 @@ namespace Piranha
 		/// </summary>
 		/// <returns>The assembly version</returns>
 		public static string GetAssemblyVersion() {
-			return Assembly.GetExecutingAssembly().GetName().Version.ToString();
+			return typeof(Utils).GetTypeInfo().Assembly.GetName().Version.ToString();
 		}
 	}
 }

@@ -105,39 +105,39 @@ namespace Piranha.Extend
 			// Scan all assemblies
 			App.Logger.Log(Log.LogLevel.INFO, "ExtensionManager: Scanning assemblies");
 			foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies()) {
-				foreach (var type in assembly.GetTypes()) {
-					if (type.IsClass && !type.IsAbstract) {
-						if (typeof(IExtension).IsAssignableFrom(type)) {
+				foreach (var info in assembly.DefinedTypes) {
+					if (info.IsClass && !info.IsAbstract) {
+						if (typeof(IExtension).GetTypeInfo().IsAssignableFrom(info)) {
 							//
 							// Extensions
 							//
-							var attr = type.GetCustomAttribute<ExtensionAttribute>();
+							var attr = info.GetCustomAttribute<ExtensionAttribute>();
 							if (attr != null) {
 								Extensions.Add(new Import() {
 									Name = attr.Name,
 									Type = attr.Type,
-									ValueType = type
+									ValueType = info
 								});
 							}
-						} else if (typeof(IModule).IsAssignableFrom(type)) {
+						} else if (typeof(IModule).GetTypeInfo().IsAssignableFrom(info)) {
 							//
 							// Modules
 							//
-							Modules.Add((IModule)Activator.CreateInstance(type));
-						} else if (typeof(Builder.PageType).IsAssignableFrom(type)) {
+							Modules.Add((IModule)Activator.CreateInstance(info));
+						} else if (typeof(Builder.PageType).GetTypeInfo().IsAssignableFrom(info)) {
 							//
 							// Page types
 							//
-							var attr = type.GetCustomAttribute<BuilderAttribute>();
+							var attr = info.GetCustomAttribute<BuilderAttribute>();
 							if (attr != null)
-								PageTypes.Add((Builder.PageType)Activator.CreateInstance(type));
-						} else if (typeof(Builder.PostType).IsAssignableFrom(type)) {
+								PageTypes.Add((Builder.PageType)Activator.CreateInstance(info));
+						} else if (typeof(Builder.PostType).GetTypeInfo().IsAssignableFrom(info)) {
 							//
 							// Post types
 							//
-							var attr = type.GetCustomAttribute<BuilderAttribute>();
+							var attr = info.GetCustomAttribute<BuilderAttribute>();
 							if (attr != null)
-								PostTypes.Add((Builder.PostType)Activator.CreateInstance(type));
+								PostTypes.Add((Builder.PostType)Activator.CreateInstance(info));
 						}
 					} 
 				}
