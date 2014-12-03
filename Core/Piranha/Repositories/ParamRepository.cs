@@ -39,13 +39,13 @@ namespace Piranha.Repositories
 		/// <param name="id">The unique id</param>
 		/// <returns>The model</returns>
 		public override Models.Param GetSingle(Guid id) {
-			var model = App.ModelCache.Params.Get(id);
+			var model = App.ModelCache.GetById<Models.Param>(id);
 
 			if (model == null) {
 				model = base.GetSingle(id);
 
 				if (model != null)
-					App.ModelCache.Params.Add(model);
+					App.ModelCache.Add(model);
 			}
 			return model;
 		}
@@ -59,13 +59,13 @@ namespace Piranha.Repositories
 		/// <param name="name">The unique name</param>
 		/// <returns>The model</returns>
 		public Models.Param GetSingle(string name) {
-			var model = App.ModelCache.Params.Get(name);
+			var model = App.ModelCache.GetByKey<Models.Param>(name);
 
 			if (model == null) {
 				model = base.GetSingle(where: p => p.Name == name);
 
 				if (model != null)
-					App.ModelCache.Params.Add(model);
+					App.ModelCache.Add(model);
 			}
 			return model;
 		}

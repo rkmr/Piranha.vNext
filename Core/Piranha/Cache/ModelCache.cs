@@ -18,20 +18,21 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Piranha.Cache
 {
 	/// <summary>
-	/// Model cache.
+	/// Handles model caching for the repositories. Can also used by 
+	/// modules to register their own model caches in.
 	/// </summary>
-	/// <typeparam name="T">The model cache</typeparam>
-	internal class ModelCache<T>
+	public class ModelCache
 	{
 		#region Members
 		/// <summary>
-		/// Cache mutex.
+		/// The available cache sets.
 		/// </summary>
-		private readonly object mutex = new object();
+		private readonly Dictionary<Type, object> cache = new Dictionary<Type, object>();
 
 		/// <summary>
 		/// The current cache provider.
@@ -39,105 +40,89 @@ namespace Piranha.Cache
 		private readonly ICache provider;
 
 		/// <summary>
-		/// Function for getting the entity id.
+		/// The private sitemap cache id.
 		/// </summary>
-		private readonly Func<T, Guid> GetId;
-
-		/// <summary>
-		/// Function for getting the unique entity key.
-		/// </summary>
-		private readonly Func<T, string> GetKey;
+		private const string CACHE_SITEMAP = "_piranha_sitemap_";
 		#endregion
 
 		/// <summary>
 		/// Default constructor.
 		/// </summary>
 		/// <param name="cache">The current cache provider</param>
-		/// <param name="getId">Function for get the model id</param>
-		/// <param name="getKey">Function for getting the model key</param>
-		internal ModelCache(ICache cache, Func<T, Guid> getId, Func<T, string> getKey) {
+		public ModelCache(ICache cache) {
 			provider = cache;
-			GetId = getId;
-			GetKey = getKey;
 		}
 
 		/// <summary>
-		/// Adds the given model to the cache.
+		/// Registers a new cache set for the given type with the
+		/// provided functions for resolving the model.
 		/// </summary>
-		/// <param name="entity">The model</param>
-		public void Add(T model) {
-			lock (mutex) {
-				var id = GetId(model);
-				var key = GetKey(model);
-				var keymap = GetKeyMap(this.GetType().FullName);
-
-				keymap[key] = id;
-				provider.Set(id.ToString(), model);
-				provider.Set(this.GetType().FullName, keymap);
-			}
+		/// <typeparam name="T">The model type</typeparam>
+		/// <param name="getId">How to get the model id</param>
+		/// <param name="getKey">How to get the model key</param>
+		public void RegisterCache<T>(Func<T, Guid> getId, Func<T, string> getKey) {
+			cache[typeof(T)] = new ModelCacheSet<T>(provider, getId, getKey);
 		}
 
 		/// <summary>
 		/// Gets the cached model with the given id.
 		/// </summary>
-		/// <param name="id">The unique id</param>
-		/// <returns>The model, null if it wasn't found</returns>
-		public T Get(Guid id) {
-			try {
-				return provider.Get<T>(id.ToString());
-			} catch { }
-			return default(T);
+		/// <typeparam name="T">The model type</typeparam>
+		/// <param name="id">The unique internal id</param>
+		/// <returns>The model</returns>
+		public T GetById<T>(Guid id) {
+			return ((ModelCacheSet<T>)cache[typeof(T)]).Get(id);
 		}
 
 		/// <summary>
-		/// Gets the cached model with the given slug.
+		/// Gets the cached model with the given key
 		/// </summary>
+		/// <typeparam name="T">The model type</typeparam>
 		/// <param name="key">The unique key</param>
-		/// <returns>The model, null if it wasn't found</returns>
-		public T Get(string key) {
-			try {
-				var keymap = GetKeyMap(this.GetType().FullName);
-				return provider.Get<T>(keymap[key].ToString());
-			} catch { }
-			return default(T);
+		/// <returns>The model</returns>
+		public T GetByKey<T>(string key) {
+			return ((ModelCacheSet<T>)cache[typeof(T)]).Get(key);
+		}
+
+		/// <summary>
+		/// Adds a new model to the cache.
+		/// </summary>
+		/// <typeparam name="T">The model type</typeparam>
+		/// <param name="model">The model</param>
+		public void Add<T>(T model) {
+			((ModelCacheSet<T>)cache[typeof(T)]).Add(model);
 		}
 
 		/// <summary>
 		/// Removes the model with the given id from the cache.
 		/// </summary>
+		/// <typeparam name="T">The model type</typeparam>
 		/// <param name="id">The unique id</param>
-		public void Remove(Guid id) {
-			lock (mutex) {
-				var model = provider.Get<T>(id.ToString());
-				if (model != null) {
-					var keymap = GetKeyMap(this.GetType().FullName);
-					var key = GetKey(model);
-
-					if (keymap.ContainsKey(key)) {
-						keymap.Remove(key);
-						provider.Set(this.GetType().FullName, keymap);
-					}
-					provider.Remove(id.ToString());
-				}
-			}
+		public void Remove<T>(Guid id) {
+			((ModelCacheSet<T>)cache[typeof(T)]).Remove(id);
 		}
 
-		#region Private methods
 		/// <summary>
-		/// Gets or creates the keymap for the given id.
+		/// Gets the current sitemap from the cache.
 		/// </summary>
-		/// <param name="id">The unique id</param>
-		/// <returns>The keymap</returns>
-		private Dictionary<string, Guid> GetKeyMap(string id) {
-			var map = provider.Get<Dictionary<string, Guid>>(id);
-
-			// Create a new map if it doesn't exist
-			if (map == null) {
-				map = new Dictionary<string, Guid>();
-				provider.Set(id, map);
-			}
-			return map;
+		/// <returns>The sitemap</returns>
+		public Client.Models.SiteMap GetSiteMap() {
+			return provider.Get<Client.Models.SiteMap>(CACHE_SITEMAP);
 		}
-		#endregion
+ 
+		/// <summary>
+		/// Sets the current sitemap.
+		/// </summary>
+		/// <param name="sitemap">The sitemap</param>
+		public void SetSiteMap(Client.Models.SiteMap sitemap) {
+			provider.Set(CACHE_SITEMAP, sitemap);
+		}
+ 
+		/// <summary>
+		/// Removes the current sitemap from the cache.
+		/// </summary>
+		public void RemoveSiteMap() {
+			provider.Remove(CACHE_SITEMAP);
+		}
 	}
 }

@@ -41,13 +41,13 @@ namespace Piranha.Repositories
 		/// <param name="id">The unique id</param>
 		/// <returns>The model</returns>
 		public override Models.Post GetSingle(Guid id) {
-			var model = App.ModelCache.Posts.Get(id);
+			var model = App.ModelCache.GetById<Models.Post>(id);
 
 			if (model == null) {
 				model = base.GetSingle(id);
 
 				if (model != null)
-					App.ModelCache.Posts.Add(model);
+					App.ModelCache.Add(model);
 			}
 			return model;
 		}
@@ -62,13 +62,13 @@ namespace Piranha.Repositories
 		/// <param name="typeId">The unique post type id</param>
 		/// <returns>The model</returns>
 		public Models.Post GetSingle(string slug, Guid typeId) {
-			var model = App.ModelCache.Posts.Get(typeId.ToString() + "_" + slug);
+			var model = App.ModelCache.GetByKey<Models.Post>(typeId.ToString() + "_" + slug);
 
 			if (model == null) {
 				model = base.GetSingle(where: p => p.Slug == slug && p.TypeId == typeId);
 
 				if (model != null)
-					App.ModelCache.Posts.Add(model);
+					App.ModelCache.Add(model);
 			}
 			return model;
 		}

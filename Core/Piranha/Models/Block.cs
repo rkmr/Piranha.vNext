@@ -81,7 +81,7 @@ namespace Piranha.Models
 				Hooks.Models.Block.OnSave(this);
 
 			// Remove from model cache
-			App.ModelCache.Blocks.Remove(this.Id);
+			App.ModelCache.Remove<Models.Block>(this.Id);
 		}
 
 		/// <summary>
@@ -93,7 +93,7 @@ namespace Piranha.Models
 				Hooks.Models.Block.OnDelete(this);
 
 			// Remove from model cache
-			App.ModelCache.Blocks.Remove(this.Id);
+			App.ModelCache.Remove<Models.Block>(this.Id);
 		}
 		#endregion
 	}

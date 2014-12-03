@@ -81,7 +81,7 @@ namespace Piranha.Models
 		/// <param name="db">The current db context</param>
 		public override void OnSave() {
 			// Remove from model cache
-			App.ModelCache.PostTypes.Remove(this.Id);
+			App.ModelCache.Remove<PostType>(this.Id);
 		}
 
 		/// <summary>
@@ -90,7 +90,7 @@ namespace Piranha.Models
 		/// <param name="db">The current db context</param>
 		public override void OnDelete() {
 			// Remove from model cache
-			App.ModelCache.PostTypes.Remove(this.Id);
+			App.ModelCache.Remove<PostType>(this.Id);
 		}
 		#endregion
 

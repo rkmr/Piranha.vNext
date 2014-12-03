@@ -84,7 +84,7 @@ namespace Piranha.Models
 		/// <param name="db">The current db context</param>
 		public override void OnSave() {
 			// Remove from model cache
-			App.ModelCache.Media.Remove(Id);
+			App.ModelCache.Remove<Models.Media>(Id);
 		}
 
 		/// <summary>
@@ -93,7 +93,7 @@ namespace Piranha.Models
 		/// <param name="db">The current db context</param>
 		public override void OnDelete() {
 			// Remove from model cache
-			App.ModelCache.Media.Remove(Id);
+			App.ModelCache.Remove<Models.Media>(Id);
 
 			// Remove binary data
 			App.Media.Delete(this);

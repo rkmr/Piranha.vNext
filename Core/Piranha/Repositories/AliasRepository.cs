@@ -52,13 +52,13 @@ namespace Piranha.Repositories
 		/// <param name="id">The unique id</param>
 		/// <returns>The model</returns>
 		public override Models.Alias GetSingle(Guid id) {
-			var model = App.ModelCache.Aliases.Get(id);
+			var model = App.ModelCache.GetById<Models.Alias>(id);
 
 			if (model == null) {
 				model = base.GetSingle(id);
 
 				if (model != null)
-					App.ModelCache.Aliases.Add(model);
+					App.ModelCache.Add(model);
 			}
 			return model;
 		}
@@ -72,13 +72,13 @@ namespace Piranha.Repositories
 		/// <param name="url">The unique old url</param>
 		/// <returns>The model</returns>
 		public Models.Alias GetSingle(string url) {
-			var model = App.ModelCache.Aliases.Get(url);
+			var model = App.ModelCache.GetByKey<Models.Alias>(url);
 
 			if (model == null) {
 				model = base.GetSingle(where: a => a.OldUrl == url);
 
 				if (model != null)
-					App.ModelCache.Aliases.Add(model);
+					App.ModelCache.Add(model);
 			}
 			return model;
 		}

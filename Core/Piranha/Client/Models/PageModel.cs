@@ -145,7 +145,7 @@ namespace Piranha.Client.Models
 		/// <param name="id">The unique id</param>
 		/// <returns>The model</returns>
 		public static T GetById<T>(Guid id) where T : PageModel {
-			var model = (T)App.ModelCache.Pages.Get(id);
+			var model = (T)App.ModelCache.GetById<PageModel>(id);
 
 			if (model == null) {
 				using (var api = new Api()) {
@@ -154,7 +154,7 @@ namespace Piranha.Client.Models
 					model = Map<T>(api, api.Pages.GetSingle(where: p => p.Id == id && p.Published <= now));
 
 					if (model != null)
-						App.ModelCache.Pages.Add(model);
+						App.ModelCache.Add<PageModel>(model);
 				}
 			}
 			return model;
@@ -175,7 +175,7 @@ namespace Piranha.Client.Models
 		/// <param name="slug">The unique slug</param>
 		/// <returns>The model</returns>
 		public static T GetBySlug<T>(string slug) where T : PageModel {
-			var model = (T)App.ModelCache.Pages.Get(slug);
+			var model = (T)App.ModelCache.GetByKey<PageModel>(slug);
 
 			if (model == null) {
 				using (var api = new Api()) {
@@ -184,7 +184,7 @@ namespace Piranha.Client.Models
 					model = Map<T>(api, api.Pages.GetSingle(where: p => p.Slug == slug && p.Published <= now));
 
 					if (model != null)
-						App.ModelCache.Pages.Add(model);
+						App.ModelCache.Add<PageModel>(model);
 				}
 			}
 			return model;

@@ -104,7 +104,10 @@ namespace Piranha.Models
 			 */
 
 			// Remove from model cache
-			App.ModelCache.Pages.Remove(this.Id);
+			App.ModelCache.Remove<Models.Page>(this.Id);
+
+			// Remove the sitemap in case the page was moved or published
+			App.ModelCache.RemoveSiteMap();
 		}
 
 		/// <summary>
@@ -121,7 +124,10 @@ namespace Piranha.Models
 			*/
 
 			// Remove from model cache
-			App.ModelCache.Pages.Remove(this.Id);
+			App.ModelCache.Remove<Models.Page>(this.Id);
+
+			// Remove the sitemap
+			App.ModelCache.RemoveSiteMap();
 		}
 		#endregion
 

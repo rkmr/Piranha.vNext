@@ -123,7 +123,7 @@ namespace Piranha.Models
 				Hooks.Models.Comment.OnSave(this);
 
 			// Remove parent post from model cache
-			App.ModelCache.Posts.Remove(this.PostId);
+			App.ModelCache.Remove<Models.Post>(this.PostId);
 		}
 
 		/// <summary>
@@ -135,7 +135,7 @@ namespace Piranha.Models
 				Hooks.Models.Comment.OnDelete(this);
 
 			// Remove parent post from model cache
-			App.ModelCache.Posts.Remove(this.PostId);
+			App.ModelCache.Remove<Models.Post>(this.PostId);
 		}
 		#endregion
 	}

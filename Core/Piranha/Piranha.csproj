@@ -45,10 +45,10 @@
   <ItemGroup>
     <Compile Include="Api.cs" />
     <Compile Include="App.cs" />
-    <Compile Include="Cache\AppCache.cs" />
+    <Compile Include="Cache\ModelCache.cs" />
     <Compile Include="Cache\NoCache.cs" />
     <Compile Include="Cache\ICache.cs" />
-    <Compile Include="Cache\ModelCache.cs" />
+    <Compile Include="Cache\ModelCacheSet.cs" />
     <Compile Include="Client\Models\CommentModel.cs" />
     <Compile Include="Client\Models\RatingsModel.cs" />
     <Compile Include="Config\Cache.cs" />

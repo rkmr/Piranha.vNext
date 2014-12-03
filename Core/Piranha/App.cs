@@ -102,7 +102,7 @@ namespace Piranha
 		/// <summary>
 		/// The private model cache.
 		/// </summary>
-		private Cache.AppCache modelCache;
+		private Cache.ModelCache modelCache;
 
 		/// <summary>
 		/// The private handler collection.
@@ -180,7 +180,7 @@ namespace Piranha
 		/// <summary>
 		/// Gets the currently configured model cache.
 		/// </summary>
-		internal static Cache.AppCache ModelCache {
+		internal static Cache.ModelCache ModelCache {
 			get { return Instance.modelCache; }
 		}
 
@@ -299,7 +299,17 @@ namespace Piranha
 
 						// Create the model cache
 						Logger.Log(Log.LogLevel.INFO, "App.Init: Creating model cache");
-						modelCache = new Piranha.Cache.AppCache(config.Cache);
+						modelCache = new Piranha.Cache.ModelCache(config.Cache);
+
+						// Register cache models
+						Logger.Log(Log.LogLevel.INFO, "App.Init: Registering default model types in the cache");
+						modelCache.RegisterCache<Models.Alias>(a => a.Id, a => a.OldUrl);
+						modelCache.RegisterCache<Models.Block>(b => b.Id, b => b.Slug);
+						modelCache.RegisterCache<Models.Media>(m => m.Id, m => m.Slug);
+						modelCache.RegisterCache<Client.Models.PageModel>(p => p.Id, p => p.Slug);
+						modelCache.RegisterCache<Models.Param>(p => p.Id, p => p.Name);
+						modelCache.RegisterCache<Models.Post>(p => p.Id, p => p.TypeId.ToString() + "_" + p.Slug);
+						modelCache.RegisterCache<Models.PostType>(p => p.Id, p => p.Slug);
 
 						// Create the handler collection
 						handlers = new Server.HandlerCollection();
