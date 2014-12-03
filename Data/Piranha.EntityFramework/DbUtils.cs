@@ -69,6 +69,8 @@ namespace Piranha.EntityFramework
 				if (entry.Entity is Models.PageType) {
 					var type = (Models.PageType)entry.Entity;
 
+					if (type.Properties.GetRemoved().Count > 0)
+						context.Set<Models.PageTypeProperty>().RemoveRange(type.Properties.GetRemoved());
 					if (type.Regions.GetRemoved().Count > 0)
 						context.Set<Models.PageTypeRegion>().RemoveRange(type.Regions.GetRemoved());
 				}

@@ -99,9 +99,19 @@ namespace Piranha.Manager.Models.PageType
 		public string View { get; set; }
 
 		/// <summary>
+		/// Gets/sets the available properties.
+		/// </summary>
+		public IList<PagePart> Properties { get; set; }
+
+		/// <summary>
 		/// Gets/sets the available regions.
 		/// </summary>
 		public IList<PagePart> Regions { get; set; }
+
+		/// <summary>
+		/// Gets/sets the available property types.
+		/// </summary>
+		public SelectList PropertyTypes { get; set; }
 
 		/// <summary>
 		/// Gets/sets the available region types.
@@ -113,7 +123,9 @@ namespace Piranha.Manager.Models.PageType
 		/// Default constructor.
 		/// </summary>
 		public EditModel() {
+			Properties = new List<PagePart>();
 			Regions = new List<PagePart>();
+			PropertyTypes = new SelectList(App.Extensions.Properties, "ValueType", "Name");
 			RegionTypes = new SelectList(App.Extensions.Regions, "ValueType", "Name");
 		}
 
@@ -144,37 +156,12 @@ namespace Piranha.Manager.Models.PageType
 					Id = Guid.NewGuid()
 				};
 				newModel = true;
+				Id = type.Id;
 			}
 			Mapper.Map<EditModel, Piranha.Models.PageType>(this, type);
 
-			// Get the removed regions
-			var removed = new List<Piranha.Models.PageTypeRegion>();
-			foreach (var region in type.Regions)
-				if (Regions.Where(r => r.Id == region.Id).SingleOrDefault() == null)
-					removed.Add(region);
-
-			// Map existing regions
-			for (var n = 0; n < Regions.Count; n++) {
-				var reg = type.Regions.Where(r => r.Id == Regions[n].Id).SingleOrDefault();
-
-				if (reg == null) {
-					reg = new Piranha.Models.PageTypeRegion() {
-						Id = Guid.NewGuid(),
-						TypeId = type.Id,
-						InternalId = Regions[n].InternalId
-					};
-					type.Regions.Add(reg);
-				}
-				reg.Name = Regions[n].Name;
-				reg.IsCollection = Regions[n].IsCollection;
-				reg.CLRType = Regions[n].CLRType;
-				reg.Order = n + 1;
-			}
-
-			// Delete removed regions
-			foreach (var region in removed) {
-				type.Regions.Remove(region);
-			}
+			MapParts<Piranha.Models.PageTypeRegion>(type.Regions, Regions);
+			MapParts<Piranha.Models.PageTypeProperty>(type.Properties, Properties);
 
 			if (newModel)
 				api.PageTypes.Add(type);
@@ -182,5 +169,45 @@ namespace Piranha.Manager.Models.PageType
 
 			this.Id = type.Id;
 		}
+
+		#region Private methods
+		/// <summary>
+		/// Maps the given parts collection.
+		/// </summary>
+		/// <typeparam name="T">The part type</typeparam>
+		/// <param name="oldParts">The old parts</param>
+		/// <param name="newParts">The new parts</param>
+		private void MapParts<T>(IList<T> oldParts, IList<PagePart> newParts) where T : Piranha.Models.Base.ContentTypePart {
+			// Get the removed part
+			var removed = new List<T>();
+			foreach (var part in oldParts)
+				if (newParts.Where(p => p.Id == part.Id).SingleOrDefault() == null)
+					removed.Add(part);
+
+			// Map existing part
+			for (var n = 0; n < newParts.Count; n++) {
+				var part = oldParts.Where(r => r.Id == newParts[n].Id).SingleOrDefault();
+
+				if (part == null) {
+					part = Activator.CreateInstance<T>();
+		
+					part.Id = Guid.NewGuid();
+					part.TypeId = Id.Value;
+					part.InternalId = newParts[n].InternalId;
+
+					oldParts.Add(part);
+				}
+				part.Name = newParts[n].Name;
+				part.IsCollection = newParts[n].IsCollection;
+				part.CLRType = newParts[n].CLRType;
+				part.Order = n + 1;
+			}
+
+			// Delete removed parts
+			foreach (var part in removed) {
+				oldParts.Remove(part);
+			}
+		}
+		#endregion
 	}
 }

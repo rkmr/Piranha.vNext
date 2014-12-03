@@ -80,19 +80,16 @@ namespace Piranha.Manager
 
 			// Page type
 			Mapper.CreateMap<Piranha.Models.PageType, Models.PageType.EditModel>()
+				.ForMember(t => t.PropertyTypes, o => o.Ignore())
 				.ForMember(t => t.RegionTypes, o => o.Ignore());
 			Mapper.CreateMap<Models.PageType.EditModel, Piranha.Models.PageType>()
 				.ForMember(t => t.Id, o => o.Ignore())
+				.ForMember(t => t.Properties, o => o.Ignore())
 				.ForMember(t => t.Regions, o => o.Ignore())
 				.ForMember(t => t.Created, o => o.Ignore())
 				.ForMember(t => t.Updated, o => o.Ignore());
-
-			// Page type region
+			Mapper.CreateMap<Piranha.Models.PageTypeProperty, Models.PageType.EditModel.PagePart>();
 			Mapper.CreateMap<Piranha.Models.PageTypeRegion, Models.PageType.EditModel.PagePart>();
-			Mapper.CreateMap<Models.PageType.EditModel.PagePart, Piranha.Models.PageTypeRegion>()
-				.ForMember(r => r.Id, o => o.Ignore())
-				.ForMember(r => r.TypeId, o => o.Ignore())
-				.ForMember(r => r.Order, o => o.Ignore());
 
 			// Post
 			Mapper.CreateMap<Piranha.Models.Post, Models.Post.EditModel>()

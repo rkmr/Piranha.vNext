@@ -100,6 +100,7 @@
     <Compile Include="Data\IPublishable.cs" />
     <Compile Include="Models\Media.cs" />
     <Compile Include="Models\Model.cs" />
+    <Compile Include="Models\PageTypeProperty.cs" />
     <Compile Include="Models\PageTypeRegion.cs" />
     <Compile Include="Models\Param.cs" />
     <Compile Include="Models\Page.cs" />

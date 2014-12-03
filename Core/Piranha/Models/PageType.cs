@@ -29,6 +29,11 @@ namespace Piranha.Models
 	{
 		#region Properties
 		/// <summary>
+		/// Gets/sets the available properties.
+		/// </summary>
+		public StateList<PageTypeProperty> Properties { get; set; }
+
+		/// <summary>
 		/// Gets/sets the available regions.
 		/// </summary>
 		public StateList<PageTypeRegion> Regions { get; set; }
@@ -38,6 +43,7 @@ namespace Piranha.Models
 		/// Default constructor.
 		/// </summary>
 		public PageType() {
+			Properties = new StateList<PageTypeProperty>();
 			Regions = new StateList<PageTypeRegion>();
 		}
 

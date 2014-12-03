@@ -34,6 +34,8 @@ manager.models.pagetype = function (id) {
 	self.description = ko.observable('');
 	self.route = ko.observable('');
 	self.view = ko.observable('');
+	self.properties = ko.observableArray([]);
+	self.propertyTypes = ko.observableArray([]);
 	self.regions = ko.observableArray([]);
 	self.regionTypes = ko.observableArray([]);
 
@@ -41,6 +43,12 @@ manager.models.pagetype = function (id) {
 	self.newRegionId = ko.observable('');
 	self.newRegionCollection = ko.observable(false);
 	self.newRegionType = ko.observable('');
+
+	self.newPropertyName = ko.observable('');
+	self.newPropertyId = ko.observable('');
+	self.newPropertyCollection = ko.observable(false);
+	self.newPropertyType = ko.observable('');
+
 
 	// Computed members
 	self.descriptionLength = ko.computed(function () {
@@ -74,8 +82,20 @@ manager.models.pagetype = function (id) {
 			Description: self.description(),
 			Route: self.route(),
 			View: self.view(),
+			Properties: [],
 			Regions: []
 		};
+
+		// Add the current property
+		for (var n = 0; n < self.properties().length; n++) {
+			data.Properties.push({
+				Id: self.properties()[n].Id,
+				Name: self.properties()[n].Name,
+				InternalId: self.properties()[n].InternalId,
+				IsCollection: self.properties()[n].IsCollection,
+				CLRType: self.properties()[n].CLRType.Value
+			});
+		}
 
 		// Add the current region
 		for (var n = 0; n < self.regions().length; n++) {
@@ -155,6 +175,49 @@ manager.models.pagetype = function (id) {
 		}
 	};
 
+	// Moves the given property up in the list
+	self.propertyUp = function (property) {
+		var index = self.properties().indexOf(property);
+		if (index > 0) {
+			self.properties().splice(index - 1, 0, self.properties().splice(index, 1)[0]);
+			self.properties(self.properties());
+		}
+	};
+
+	// Moves the given property down in the list
+	self.propertyDown = function (property) {
+		var index = self.properties().indexOf(property);
+		if (index < (self.properties().length - 1)) {
+			self.properties().splice(index + 1, 0, self.properties().splice(index, 1)[0]);
+			self.properties(self.properties());
+		}
+	};
+
+	// Adds a new property to the list
+	self.propertyAdd = function () {
+		self.properties().push({
+			Name: self.newPropertyName(),
+			InternalId: self.newPropertyId(),
+			IsCollection: self.newPropertyCollection(),
+			CLRType: self.newPropertyType()
+		});
+		self.properties(self.properties());
+
+		self.newPropertyName('');
+		self.newPropertyId('');
+		self.newPropertyCollection(false);
+		self.newPropertyType('');
+	};
+
+	// Deletes the given property from the list
+	self.propertyDelete = function (property) {
+		var index = self.properties().indexOf(property);
+		if (index > -1) {
+			self.properties().splice(index, 1);
+			self.properties(self.properties());
+		}
+	};
+
 	// Binds the given data to the model.
 	self.bind = function (data) {
 		self.id(data.Id);
@@ -163,6 +226,8 @@ manager.models.pagetype = function (id) {
 		self.description(data.Description);
 		self.route(data.Route);
 		self.view(data.View);
+		self.properties(data.Properties);
+		self.propertyTypes(data.PropertyTypes);
 		self.regions(data.Regions);
 		self.regionTypes(data.RegionTypes);
 	}

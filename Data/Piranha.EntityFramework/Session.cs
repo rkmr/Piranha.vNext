@@ -120,6 +120,7 @@ namespace Piranha.EntityFramework
 					.Include(p => p.Type);
 			} else if (typeof(Models.PageType) == typeof(T)) {
 				return (IQueryable<T>)db.PageTypes
+					.Include(p => p.Properties)
 					.Include(p => p.Regions);
 			}
 			return db.Set<T>();

@@ -64,6 +64,10 @@
     <Compile Include="Migrations\201411272156127_AddPageTypeRegions.Designer.cs">
       <DependentUpon>201411272156127_AddPageTypeRegions.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201412030715277_AddPageTypeProperties.cs" />
+    <Compile Include="Migrations\201412030715277_AddPageTypeProperties.Designer.cs">
+      <DependentUpon>201412030715277_AddPageTypeProperties.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Session.cs" />
@@ -91,6 +95,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201411272156127_AddPageTypeRegions.resx">
       <DependentUpon>201411272156127_AddPageTypeRegions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201412030715277_AddPageTypeProperties.resx">
+      <DependentUpon>201412030715277_AddPageTypeProperties.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

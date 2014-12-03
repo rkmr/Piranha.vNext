@@ -50,8 +50,10 @@
 		<div class="row with-sidebar">
 			<div class="sidebar">
 				<a href="#"><span class="glyphicon glyphicon-leaf"></span>Regions</a>
+				<a href="#"><span class="glyphicon glyphicon-leaf"></span>Properties</a>
 			</div>
 			<div class="col-sm-12">	
+				<!-- Regions -->
 				<table class="table table-striped">
 					<thead>
 						<tr>
@@ -75,8 +77,7 @@
 								<input type="checkbox" data-bind="checked: region.IsCollection" />
 							</td>
 							<td>
-								<select class="form-control" data-bind="options: $root.regionTypes, optionsText: 'Text', value: region.CLRType">
-								</select>
+								<select class="form-control" data-bind="options: $root.regionTypes, optionsText: 'Text', value: region.CLRType"></select>
 							</td>
 							<td class="actions">
 								<a href="#" class="up" data-bind="click: function() { $root.regionUp(region); }"></a>
@@ -96,11 +97,63 @@
 								<input type="checkbox" data-bind="checked: newRegionCollection" />
 							</td>
 							<td>
-								<select class="form-control" data-bind="options: $root.regionTypes, optionsText: 'Text', value: newRegionType, optionsCaption: 'Choose type'">
-								</select>
+								<select class="form-control" data-bind="options: $root.regionTypes, optionsText: 'Text', value: newRegionType, optionsCaption: 'Choose type'"></select>
 							</td>
 							<td>
 								<button class="btn btn-primary" data-bind="click: regionAdd">Add</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<!-- Properties -->
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th>Internal id</th>
+							<th>Collection</th>
+							<th>Type</th>
+							<th class="actions three"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<!-- ko foreach: { data: properties, as: 'property' } -->
+						<tr>
+							<td>
+								<input type="text" class="form-control" data-bind="value: property.Name" />
+							</td>
+							<td>
+								<input type="text" class="form-control" data-bind="value: property.InternalId" />
+							</td>
+							<td>
+								<input type="checkbox" data-bind="checked: property.IsCollection" />
+							</td>
+							<td>
+								<select class="form-control" data-bind="options: $root.propertyTypes, optionsText: 'Text', value: property.CLRType"></select>
+							</td>
+							<td class="actions">
+								<a href="#" class="up" data-bind="click: function() { $root.propertyUp(property); }"></a>
+								<a href="#" class="down" data-bind="click: function() { $root.propertyDown(property); }"></a>
+								<a href="#" class="delete" data-bind="click: function() { $root.propertyDelete(property); }"></a>
+							</td>
+						</tr>
+						<!-- /ko -->
+						<tr>
+							<td>
+								<input type="text" class="form-control" data-bind="value: newPropertyName" placeholder="Display name" />
+							</td>
+							<td>
+								<input type="text" class="form-control" data-bind="value: newPropertyId" placeholder="Internal id" />
+							</td>
+							<td>
+								<input type="checkbox" data-bind="checked: newPropertyCollection" />
+							</td>
+							<td>
+								<select class="form-control" data-bind="options: $root.propertyTypes, optionsText: 'Text', value: newPropertyType, optionsCaption: 'Choose type'"></select>
+							</td>
+							<td>
+								<button class="btn btn-primary" data-bind="click: propertyAdd">Add</button>
 							</td>
 						</tr>
 					</tbody>

@@ -67,6 +67,11 @@ namespace Piranha.EntityFramework
 		public DbSet<Models.PageType> PageTypes { get; set; }
 
 		/// <summary>
+		/// Gets/sets the page type property set.
+		/// </summary>
+		public DbSet<Models.PageTypeProperty> PageTypeProperties { get; set; }
+
+		/// <summary>
 		/// Gets/sets the page type region set.
 		/// </summary>
 		public DbSet<Models.PageTypeRegion> PageTypeRegions { get; set; }
@@ -174,7 +179,22 @@ namespace Piranha.EntityFramework
 				.HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute() {
 					IsUnique = true
 				}));
+			modelBuilder.Entity<Models.PageType>().HasMany(t => t.Properties).WithRequired().HasForeignKey(p => p.TypeId);
 			modelBuilder.Entity<Models.PageType>().HasMany(t => t.Regions).WithRequired().HasForeignKey(r => r.TypeId);
+
+			// PageTypeProperty
+			modelBuilder.Entity<Models.PageTypeProperty>().ToTable("PiranhaPageTypeProperties");
+			modelBuilder.Entity<Models.PageTypeProperty>().Property(p => p.Name).HasMaxLength(128).IsRequired();
+			modelBuilder.Entity<Models.PageTypeProperty>().Property(p => p.CLRType).HasMaxLength(512).IsRequired();
+			modelBuilder.Entity<Models.PageTypeProperty>().Property(p => p.TypeId)
+				.HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("IX_InternalId") {
+					IsUnique = true,
+					Order = 1
+				}));
+			modelBuilder.Entity<Models.PageTypeProperty>().Property(r => r.InternalId).HasMaxLength(32).IsRequired()
+				.HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("IX_InternalId") {
+					Order = 2
+				}));				
 
 			// PageTypeRegion
 			modelBuilder.Entity<Models.PageTypeRegion>().ToTable("PiranhaPageTypeRegions");
