@@ -1,0 +1,55 @@
+2014-11-27 18:29:18 [INFO] App.Init: Starting application
+2014-11-27 18:29:19 [INFO] App.Init: Registering security provider
+2014-11-27 18:29:19 [INFO] App.Init: Registered Piranha.AspNet.Security.SimpleSecurity
+2014-11-27 18:29:19 [INFO] App.Init: Registering cache provider
+2014-11-27 18:29:19 [INFO] App.Init: Registered Piranha.AspNet.Cache.HttpCache
+2014-11-27 18:29:19 [INFO] App.Init: Registering media provider
+2014-11-27 18:29:19 [INFO] App.Init: Registered Piranha.IO.FileMedia
+2014-11-27 18:29:19 [INFO] App.Init: Creating model cache
+2014-11-27 18:29:19 [INFO] App.Init: Creating extension manager
+2014-11-27 18:29:19 [INFO] ExtensionManager: Scanning assemblies
+2014-11-27 18:29:19 [INFO] ExtensionManager: Initializing modules
+2014-11-27 18:30:47 [INFO] App.Init: Starting application
+2014-11-27 18:30:48 [INFO] App.Init: Registering security provider
+2014-11-27 18:30:48 [INFO] App.Init: Registered Piranha.AspNet.Security.SimpleSecurity
+2014-11-27 18:30:48 [INFO] App.Init: Registering cache provider
+2014-11-27 18:30:48 [INFO] App.Init: Registered Piranha.AspNet.Cache.HttpCache
+2014-11-27 18:30:48 [INFO] App.Init: Registering media provider
+2014-11-27 18:30:48 [INFO] App.Init: Registered Piranha.IO.FileMedia
+2014-11-27 18:30:48 [INFO] App.Init: Creating model cache
+2014-11-27 18:30:48 [INFO] App.Init: Creating extension manager
+2014-11-27 18:30:48 [INFO] ExtensionManager: Scanning assemblies
+2014-11-27 18:30:48 [INFO] ExtensionManager: Initializing modules
+2014-11-28 16:15:34 [INFO] App.Init: Starting application
+2014-11-28 16:15:34 [INFO] App.Init: Registering security provider
+2014-11-28 16:15:34 [INFO] App.Init: Registered Piranha.AspNet.Security.SimpleSecurity
+2014-11-28 16:15:34 [INFO] App.Init: Registering cache provider
+2014-11-28 16:15:34 [INFO] App.Init: Registered Piranha.AspNet.Cache.HttpCache
+2014-11-28 16:15:34 [INFO] App.Init: Registering media provider
+2014-11-28 16:15:34 [INFO] App.Init: Registered Piranha.IO.FileMedia
+2014-11-28 16:15:34 [INFO] App.Init: Creating model cache
+2014-11-28 16:15:34 [INFO] App.Init: Creating extension manager
+2014-11-28 16:15:34 [INFO] ExtensionManager: Scanning assemblies
+2014-11-28 16:15:35 [INFO] ExtensionManager: Initializing modules
+2014-11-28 16:22:04 [INFO] App.Init: Starting application
+2014-11-28 16:22:04 [INFO] App.Init: Registering security provider
+2014-11-28 16:22:04 [INFO] App.Init: Registered Piranha.AspNet.Security.SimpleSecurity
+2014-11-28 16:22:04 [INFO] App.Init: Registering cache provider
+2014-11-28 16:22:04 [INFO] App.Init: Registered Piranha.AspNet.Cache.HttpCache
+2014-11-28 16:22:04 [INFO] App.Init: Registering media provider
+2014-11-28 16:22:04 [INFO] App.Init: Registered Piranha.IO.FileMedia
+2014-11-28 16:22:04 [INFO] App.Init: Creating model cache
+2014-11-28 16:22:04 [INFO] App.Init: Creating extension manager
+2014-11-28 16:22:04 [INFO] ExtensionManager: Scanning assemblies
+2014-11-28 16:22:05 [INFO] ExtensionManager: Initializing modules
+2014-11-28 16:24:07 [INFO] App.Init: Starting application
+2014-11-28 16:24:07 [INFO] App.Init: Registering security provider
+2014-11-28 16:24:07 [INFO] App.Init: Registered Piranha.AspNet.Security.SimpleSecurity
+2014-11-28 16:24:07 [INFO] App.Init: Registering cache provider
+2014-11-28 16:24:07 [INFO] App.Init: Registered Piranha.AspNet.Cache.HttpCache
+2014-11-28 16:24:07 [INFO] App.Init: Registering media provider
+2014-11-28 16:24:07 [INFO] App.Init: Registered Piranha.IO.FileMedia
+2014-11-28 16:24:07 [INFO] App.Init: Creating model cache
+2014-11-28 16:24:07 [INFO] App.Init: Creating extension manager
+2014-11-28 16:24:07 [INFO] ExtensionManager: Scanning assemblies
+2014-11-28 16:24:08 [INFO] ExtensionManager: Initializing modules
